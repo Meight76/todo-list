@@ -1,0 +1,32 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "A task manager app",
+  "homepage": "https://github.com/Meight76/todo-list#readme",
+  "bugs": {
+    "url": "https://github.com/Meight76/todo-list/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Meight76/todo-list.git"
+  },
+  "license": "ISC",
+  "author": "Meight76",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devmode": "webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.4",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.6",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.106.2",
+    "webpack-cli": "^7.0.2",
+    "webpack-dev-server": "^5.2.3",
+    "webpack-merge": "^6.0.1"
+  }
+}
