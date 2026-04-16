@@ -19,16 +19,16 @@ export default {
     module: {
         rules: [
             {
-                test: /\.css$i/,
+                test: /\.css$/i,
                 use: ["style-loader", "css-loader"],
             },
             {
-                test: /\.html$i/,
+                test: /\.html$/i,
                 use: ["html-loader"],
             },
             {
-                test: /\.(png|svg|gif|jpeg|jpg)$i/,
-                use: "asset/resouce",
+                test: /\.(png|svg|gif|jpeg|jpg)$/i,
+                type: "asset/resource",
             },
         ],
     },

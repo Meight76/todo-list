@@ -112,5 +112,5 @@ export class TodoList {
         return this.#todos.some( element => element.title === name );
     }
 }
-// it should be one class for handling all the logic
+
 
