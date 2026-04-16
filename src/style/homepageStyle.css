@@ -1,0 +1,44 @@
+.main-content {
+    display: grid;
+    grid-template-rows: 2fr 6fr;
+}
+
+.btn-div {
+    display: flex;
+    margin: 50px 200px 0 200px;
+    gap: 50px;
+
+    button {
+        flex: 1;
+        font-size: 2.5em;
+        cursor: pointer;
+        text-transform: uppercase;
+        border-radius: 12px;
+        border: none;
+    }
+
+    .project-btn {
+        background-color: var(--secondary-color);
+        color: var(--bright-white);
+
+        &:hover {
+            background-color: hsl(from var(--secondary-color) h s calc(l - 10));
+        }
+        &:active {
+            background-color: hsl(from var(--secondary-color) h s calc(l - 20));
+
+        }
+    }
+
+    .todos-btn {
+        background-color: var(--thirdth-color);
+        color: var(--bright-white);
+
+        &:hover {
+            background-color: hsl(from var(--thirdth-color) h s calc(l - 10));
+        }
+        &:active {
+            background-color: hsl(from var(--thirdth-color) h s calc(l - 20));
+        }
+    }
+}

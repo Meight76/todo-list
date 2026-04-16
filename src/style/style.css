@@ -1,8 +1,8 @@
 :root {
  --accent-color: hsl(0 0% 0%);
- --secondary-color: hsl(178 100% 44.6%);
- --thirdth-color: hsl(279 100% 51.1%);
- --fourth-color: hsl(127 100% 44.6%);
+ --secondary-color: hsl(131 88.5% 51.1%);
+ --thirdth-color: #6366F1;
+ --fourth-color: hsl(167 88.5% 51.1%);
  --bright-white: hsl(0 0% 90%);
  --side-nav-menu-color: #f8f9fa;
  --light-white: hsl(0 0% 80%);
@@ -103,6 +103,10 @@ body {
                     &.selected {
                         background-color: var(--accent-color);
                         color:var(--bright-white);
+
+                        svg {
+                            fill: var(--bright-white);
+                        }
                     }
                     &:hover {
                         background-color: hsl(from var(--accent-color) h s calc(l + 90));

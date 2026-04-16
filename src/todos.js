@@ -1,9 +1,14 @@
+import { main } from "./index.js";
+import { createTag, resetDiv } from "./helpFunctions.js";
+import project from "./projects.js";
+import "./style/todopage.css";
 
 export class Todo {
     constructor(title, description, dueDate, priority, check, notes) {
         this._title = title;
         this._description = description;
         this._dueDate = dueDate;
+        this.id = crypto.randomUUID();
         this._priority = priority;
         this._check = check;
         this._notes = notes;
@@ -113,4 +118,20 @@ export class TodoList {
     }
 }
 
-
+export function todosPage() {
+    resetDiv();
+    // the project class has an array that stores all projects existing
+    const projectList = project.globalProjects;
+    let allTodos = [];
+    // get the todoList object from all project object
+    for (const project of projectList) {
+        allTodos.push(project.todos.getTodos());
+    }
+    const todosDiv = document.createElement("div");
+    todosDiv.classList.add("todos-div");
+    for (const todos of allTodos) {
+        const todoItem = document.createElement("button");
+        createTag("h2", todos.title, "todo-item", todosDiv);
+        todosDiv.appendChild(todoItem);
+    }
+}
