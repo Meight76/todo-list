@@ -6,10 +6,10 @@ import { main } from "./index.js";
 export default class project {
     static #allProjects = [];
     constructor(title, color, dueDate, description) {
-        this._title = title;
-        this._color = color;
-        this._dueDate = dueDate;
-        this._description = description;
+        this.title = title;
+        this.color = color;
+        this.dueDate = dueDate;
+        this.description = description;
         this._id = crypto.randomUUID();
         this.todos = new TodoList();
         project.#allProjects.push(this);
@@ -24,6 +24,30 @@ export default class project {
         return project.#allProjects.slice();
     }
 }
+
+export function refreshProjects(node) {
+        const arrayProjects = project.globalProjects;
+        for (const projectItem of arrayProjects) {
+            const divItem = document.createElement("div");
+            const title = document.createElement("h2");
+            title.textContent = projectItem.title
+            const line = document.createElement("div");
+            line.classList.add("show-color");
+            line.style.backgroundColor = projectItem.color;
+
+            const description = document.createElement("p");
+            description.textContent = projectItem.description;
+            const date = document.createElement("p");
+
+            divItem.appendChild(title);
+            divItem.appendChild(line);
+            divItem.appendChild(date);
+            divItem.appendChild(description);
+
+            node.appendChild(divItem);
+
+        }
+    }
 
 export function projectPage() {
     resetDiv(main);
@@ -126,6 +150,7 @@ export function projectPage() {
         const description = descriptionArea.value;
         new project(title, color, date, description);
         console.log(project.globalProjects);
+        refreshProjects(main);
         addDialog.close();
     });
 
@@ -153,5 +178,10 @@ export function projectPage() {
 
     divProjectBtn.appendChild(createProjectBtn);
 
+    const emptyDiv = document.createElement("div");
+
     main.appendChild(divProjectBtn);
+    main.appendChild(emptyDiv);
+    refreshProjects(main);
+
 }
