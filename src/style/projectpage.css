@@ -1,0 +1,156 @@
+.main-content {
+    display: grid;
+    grid-auto-rows: 100px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.add-project-btn {
+    justify-self: start;
+    display: flex;
+    margin: 20px;
+    justify-content: center;
+    gap: 10px;
+    color: var(--bright-white);
+    text-transform: uppercase;
+    font-weight: 800;
+    border: none;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    padding: 5px 0 5px 0;
+    width: min(40vw, 400px);
+    align-self: start;
+
+    svg {
+        width: 20px;
+        fill: var(--bright-white);
+    }
+    span {
+        align-self: center;
+    }
+
+    &:hover {
+        background-color: hsl(from var(--secondary-color) h s calc(l - 10));
+    }
+
+    &:active {
+        background-color: hsl(from var(--secondary-color) h s calc(l - 20));
+    }
+}
+
+.add-dialog:open {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    width: min(50vw, 600px);
+    border-radius: 8px;
+
+    &::backdrop {
+        background-color: hsl(0 0% 0% / 0.2);
+    }
+
+    label {
+        color: hsl(from var(--light-white) h s calc(l - 60));
+
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .add-btn {
+        align-self: center;
+        margin-top: 10px;
+        background-color: var(--secondary-color);
+        color: var(--bright-white);
+        text-transform: uppercase;
+        border: none;
+        padding: 7px 40px 7px 40px;
+        border-radius: 8px;
+
+        &:hover {
+            background-color: hsl(from var(--secondary-color) h s calc(l - 10));
+        }
+
+        &:active {
+            background-color: hsl(from var(--secondary-color) h s calc(l - 20));
+        }
+    }
+
+    .add-dialog-header {
+        display: flex;
+        text-transform: uppercase;
+        justify-content: space-between;
+
+        .add-dialog-close-btn {
+            align-self: start;
+            border: none;
+            background-color: transparent;
+
+            svg {
+                width: 25px;
+                fill: red;
+
+                &:hover {
+                    fill: hsl(from red h s calc(l - 20));
+                }
+                &:active {
+                    fill: hsl(from red h s calc(l - 30));
+                }
+            }
+        }
+    }
+
+    .add-dialog-div {
+        display: flex;
+        gap: 5px;
+
+        &:not(:has(.add-dialog-color-pick)) {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &:has(.add-dialog-color-pick) {
+            label {
+                align-self: center;
+            }
+        }
+
+    }
+}
+
+input[type="text"] {
+    border-radius: 8px;
+    border: 1px solid hsl(from var(--light-white) h s calc(l - 30));
+    padding: 5px;
+}
+
+textarea {
+    border: 1px solid hsl(from var(--light-white) h s calc(l - 30));
+    border-radius: 8px;
+    padding: 5px;
+    resize: vertical;
+}
+
+input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    width: 30px;
+
+    &::-webkit-color-swatch {
+        border-radius: 15px;
+        border: none;
+    }
+
+}
+
+input[type="date"] {
+    border: 1px solid hsl(from var(--light-white) h s calc(l - 30));
+    border-radius: 8px;
+    padding: 5px;
+}

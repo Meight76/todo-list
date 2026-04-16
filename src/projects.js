@@ -1,4 +1,5 @@
 import { Todo, TodoList } from "./todos.js";
+import "./style/projectpage.css";
 import { resetDiv, createDivInputs } from "./helpFunctions.js";
 import { main } from "./index.js";
 
@@ -29,6 +30,7 @@ export function projectPage() {
     const allProject = project.globalProjects
 
     const addDialog = document.createElement("dialog");
+    addDialog.classList.add("add-dialog");
     addDialog.setAttribute("id", "add-dialog");
     addDialog.setAttribute("closedby", "any");
 
@@ -57,6 +59,7 @@ export function projectPage() {
 
     const titleInput = createDivInputs("title", "title", ["add-dialog-title"],
         { required: "",});
+    titleInput.setAttribute("type", "text");
     const titleLabel = document.createElement("label");
     titleLabel.setAttribute("for", "title");
     titleLabel.textContent = "title:";
@@ -87,13 +90,14 @@ export function projectPage() {
     colorPickInput.setAttribute("name", "color");
     colorPickInput.setAttribute("type", "color");
     colorPickInput.setAttribute("required", "");
+    colorPickInput.setAttribute("value", "#ff0000");
     colorPickInput.classList.add("add-dialog-color-pick");
     const colorPickInputLabel = document.createElement("label");
     colorPickInputLabel.textContent = "Pick a color";
     colorPickInputLabel.setAttribute("for", "color");
 
-    divColorPick.appendChild(colorPickInputLabel);
     divColorPick.appendChild(colorPickInput);
+    divColorPick.appendChild(colorPickInputLabel);
 
     const divDatePick = document.createElement("div");
     divDatePick.classList.add("add-dialog-div");
@@ -105,7 +109,8 @@ export function projectPage() {
     datePickInput.setAttribute("name", "date");
 
     const datePickInputLabel = document.createElement("label");
-    datePickInputLabel.textContent = "Due date";
+    datePickInputLabel.setAttribute("for", "date");
+    datePickInputLabel.textContent = "Due date:";
 
     divDatePick.appendChild(datePickInputLabel);
     divDatePick.appendChild(datePickInput);
@@ -113,6 +118,16 @@ export function projectPage() {
     const addButton = document.createElement("button");
     addButton.textContent = "Add Project";
     addButton.classList.add("add-btn");
+    addButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        const title = titleInput.value;
+        const color = colorPickInput.value;
+        const date = new Date(datePickInput.value);
+        const description = descriptionArea.value;
+        new project(title, color, date, description);
+        console.log(project.globalProjects);
+        addDialog.close();
+    });
 
     const form = document.createElement("form");
 
@@ -126,11 +141,17 @@ export function projectPage() {
     addDialog.appendChild(form);
     main.appendChild(addDialog);
 
+    const divProjectBtn = document.createElement("div");
+    divProjectBtn.classList.add("project-btn");
+
     const createProjectBtn = document.createElement("button");
-    createProjectBtn.textContent = "Add project";
+    createProjectBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title></title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>` + `<span>Add Project</span>`;
     createProjectBtn.classList.add("add-project-btn");
     createProjectBtn.addEventListener("click", (e) => {
         addDialog.showModal();
     });
-    main.appendChild(createProjectBtn);
+
+    divProjectBtn.appendChild(createProjectBtn);
+
+    main.appendChild(divProjectBtn);
 }
