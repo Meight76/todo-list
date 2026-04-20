@@ -1,12 +1,13 @@
 :root {
- --accent-color: hsl(0 0% 0%);
- --secondary-color: hsl(131 88.5% 51.1%);
- --thirdth-color: #6366F1;
+ --accent-color: #111111;
+ --secondary-color: midnightblue;
+ --thirdth-color: turquoise;
  --fourth-color: hsl(167 88.5% 51.1%);
  --bright-white: hsl(0 0% 90%);
  --side-nav-menu-color: #f8f9fa;
  --light-white: hsl(0 0% 80%);
  --font-size: 0.5rem;
+ --project-item-text-color: #fff;
  --logo-font-size: 2rem;
 }
 
@@ -82,7 +83,7 @@ body {
 
                 button {
                     border: none;
-                    border-radius: 3px;
+                    border-radius: 6px;
                     display: flex;
                     background-color: transparent;
                     text-align: start;
@@ -110,7 +111,7 @@ body {
                         }
                     }
                     &:hover {
-                        background-color: hsl(from var(--accent-color) h s calc(l + 90));
+                        background-color: hsl(from var(--accent-color) h s calc(l + 85));
                         cursor: pointer;
                     }
                 }

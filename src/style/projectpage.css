@@ -154,3 +154,25 @@ input[type="date"] {
     border-radius: 8px;
     padding: 5px;
 }
+
+.project-item {
+    box-shadow: 0 0 7px hsl(0 0% 0% / 0.2);
+    display: flex;
+    padding: 16px;
+    gap: 10px;
+    color: var(--project-item-text-color);
+
+    p,
+    h1 {
+        align-self: center;
+    }
+
+}
+
+.project-div {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    grid-column: span 2;
+
+}

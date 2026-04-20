@@ -1,15 +1,17 @@
 import { main } from "./index.js";
 import "./style/homepageStyle.css";
 import { createTag, resetDiv, shuffle } from "./helpFunctions.js";
-import Project from "./projects.js";
+import Project, {projectPage} from "./projects.js";
 import { Todo, TodoList} from "./todos.js";
 
 export function homepage() {
+    resetDiv(main);
     const buttonDiv = createTag("div", "", "btn-div", main);
     const projectBtn = createTag("button", "Project", "project-btn", buttonDiv);
     const todosBtn = createTag("button", "Todos", "todos-btn", buttonDiv);
 
     const projectsDiv = document.createElement("div");
+    projectsDiv.setAttribute("id", "projects");
     const projectsList = Project.globalProjects;
     shuffle(projectsList);
 

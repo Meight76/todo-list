@@ -26,18 +26,20 @@ export default class project {
 }
 
 export function refreshProjects(node) {
+        node.textContent = "";
         const arrayProjects = project.globalProjects;
         for (const projectItem of arrayProjects) {
             const divItem = document.createElement("div");
+            divItem.style.backgroundColor = projectItem.color;
+            divItem.classList.add("project-item");
             const title = document.createElement("h2");
             title.textContent = projectItem.title
             const line = document.createElement("div");
-            line.classList.add("show-color");
-            line.style.backgroundColor = projectItem.color;
 
             const description = document.createElement("p");
             description.textContent = projectItem.description;
             const date = document.createElement("p");
+            date.textContent = projectItem.dueDate.toDateString();
 
             divItem.appendChild(title);
             divItem.appendChild(line);
@@ -51,7 +53,12 @@ export function refreshProjects(node) {
 
 export function projectPage() {
     resetDiv(main);
+
+    const testProjectItem = new project("call sofia to go out with me", "#ff00f1", new Date("2026-04-22"),"send her and dm" );
     const allProject = project.globalProjects
+    const projectDiv = document.createElement("div");
+    projectDiv.setAttribute("id", "project-div");
+    projectDiv.classList.add("project-div");
 
     const addDialog = document.createElement("dialog");
     addDialog.classList.add("add-dialog");
@@ -150,7 +157,7 @@ export function projectPage() {
         const description = descriptionArea.value;
         new project(title, color, date, description);
         console.log(project.globalProjects);
-        refreshProjects(main);
+        refreshProjects(projectDiv);
         addDialog.close();
     });
 
@@ -182,6 +189,7 @@ export function projectPage() {
 
     main.appendChild(divProjectBtn);
     main.appendChild(emptyDiv);
-    refreshProjects(main);
+    main.appendChild(projectDiv);
+    refreshProjects(projectDiv);
 
 }

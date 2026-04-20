@@ -119,7 +119,7 @@ export class TodoList {
 }
 
 export function todosPage() {
-    resetDiv();
+    resetDiv(main);
     // the project class has an array that stores all projects existing
     const projectList = project.globalProjects;
     let allTodos = [];
