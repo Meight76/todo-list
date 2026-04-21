@@ -105,18 +105,8 @@
     .add-dialog-div {
         display: flex;
         gap: 5px;
-
-        &:not(:has(.add-dialog-color-pick)) {
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        &:has(.add-dialog-color-pick) {
-            label {
-                align-self: center;
-            }
-        }
-
+        flex-direction: column;
+        gap: 10px;
     }
 }
 
@@ -133,20 +123,13 @@ textarea {
     resize: vertical;
 }
 
-input[type="color"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    height: 30px;
-    border: none;
-    border-radius: 8px;
-    width: 30px;
-
-    &::-webkit-color-swatch {
-        border-radius: 15px;
-        border: none;
-    }
-
+.call-chose-color {
+    background-color: red;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
 }
 
 input[type="date"] {

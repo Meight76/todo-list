@@ -1,6 +1,6 @@
 import { Todo, TodoList } from "./todos.js";
 import "./style/projectpage.css";
-import { resetDiv, createDivInputs, cleanTags, createSelectOptions } from "./helpFunctions.js";
+import { resetDiv, createDivInputs, cleanTags, createSelectOptions, createDialogColorOptions } from "./helpFunctions.js";
 import { main } from "./index.js";
 
 export default class project {
@@ -221,7 +221,7 @@ export function refreshProjects(node) {
 export function projectPage() {
     resetDiv(main);
 
-    const testProjectItem = new project("call sofia to go out with me", "#ff00f1", new Date("2026-04-22"),"send her and dm" );
+    const testProjectItem = new project("example", "#000000", new Date("2026-04-22"),"Just for have a base looking" );
     const allProject = project.globalProjects
     const projectDiv = document.createElement("div");
     projectDiv.setAttribute("id", "project-div");
@@ -284,22 +284,43 @@ export function projectPage() {
     divDescriptionArea.appendChild(descriptionLabel);
     divDescriptionArea.appendChild(descriptionArea);
 
-    const divColorPick = document.createElement("div");
-    divColorPick.classList.add("add-dialog-div");
+    const choseColorDiv = document.createElement("div");
+    const choseColor = document.createElement("dialog");
+    main.appendChild(choseColor);
+    const choseColorLabel = document.createElement("label");
 
-    const colorPickInput = document.createElement("input");
-    colorPickInput.setAttribute("id", "color");
-    colorPickInput.setAttribute("name", "color");
-    colorPickInput.setAttribute("type", "color");
-    colorPickInput.setAttribute("required", "");
-    colorPickInput.setAttribute("value", "#ff0000");
-    colorPickInput.classList.add("add-dialog-color-pick");
-    const colorPickInputLabel = document.createElement("label");
-    colorPickInputLabel.textContent = "Pick a color";
-    colorPickInputLabel.setAttribute("for", "color");
+    choseColorDiv.setAttribute("id", "chose-color-div");
+    choseColor.setAttribute("id", "color-pick");
+    choseColor.setAttribute("closedby", "any");
+    choseColorLabel.setAttribute("for", "color-pick-call");
+    choseColorLabel.textContent = "pick a color";
 
-    divColorPick.appendChild(colorPickInput);
-    divColorPick.appendChild(colorPickInputLabel);
+    const color = ["#1c0705", "#ea8350", "#664d65", "#7f3320", "#39544b",
+                   "#ac58e9", "#1c3935", "#670627", "#400e2f",
+                ]
+
+    const callChoseColor = document.createElement("button");
+    callChoseColor.classList.add("call-chose-color");
+    callChoseColor.setAttribute("id", "color-pick-call");
+    callChoseColor.value = "#000000";
+    callChoseColor.addEventListener("click", () => {
+        choseColor.showModal();
+    });
+    createDialogColorOptions(choseColor, color);
+    const colorButtons = document.querySelectorAll(".color-pickup-btn");
+    console.log(colorButtons);
+    for (const button of colorButtons) {
+        button.addEventListener("click", (e) => {
+            const color = e.currentTarget.value;
+            callChoseColor.style.backgroundColor = color;
+            callChoseColor.value = color;
+            choseColor.close();
+        });
+    }
+
+    choseColorDiv.appendChild(callChoseColor);
+    choseColorDiv.appendChild(choseColorLabel);
+
 
     const divDatePick = document.createElement("div");
     divDatePick.classList.add("add-dialog-div");
@@ -323,7 +344,7 @@ export function projectPage() {
     addButton.addEventListener("click", (e) => {
         e.preventDefault();
         const title = titleInput.value;
-        const color = colorPickInput.value;
+        const color = callChoseColor.value;
         const date = new Date(datePickInput.value);
         const description = descriptionArea.value;
         new project(title, color, date, description);
@@ -335,7 +356,7 @@ export function projectPage() {
     const form = document.createElement("form");
 
     form.appendChild(divTitleInput);
-    form.appendChild(divColorPick);
+    form.appendChild(choseColorDiv);
     form.appendChild(divDatePick);
     form.appendChild(divDescriptionArea);
     form.appendChild(addButton);

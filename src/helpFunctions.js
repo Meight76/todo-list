@@ -59,3 +59,13 @@ export function createSelectOptions(selectNode, arrOptions, defaultOption) {
     }
 
 }
+
+export function createDialogColorOptions(node, arrColor) {
+    for (const color of arrColor) {
+        const button = document.createElement("button");
+        button.value = color;
+        button.style.backgroundColor = color;
+        button.classList.add("color-pickup-btn");
+        node.appendChild(button);
+    }
+}
