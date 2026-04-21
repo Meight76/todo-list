@@ -286,7 +286,7 @@ export function projectPage() {
 
     const choseColorDiv = document.createElement("div");
     const choseColor = document.createElement("dialog");
-    main.appendChild(choseColor);
+    choseColorDiv.appendChild(choseColor);
     const choseColorLabel = document.createElement("label");
 
     choseColorDiv.setAttribute("id", "chose-color-div");
@@ -303,23 +303,13 @@ export function projectPage() {
     callChoseColor.classList.add("call-chose-color");
     callChoseColor.setAttribute("id", "color-pick-call");
     callChoseColor.value = "#000000";
-    callChoseColor.addEventListener("click", () => {
-        choseColor.showModal();
+    callChoseColor.addEventListener("click", (e) => {
+        e.preventDefault();
+        choseColor.show();
     });
-    createDialogColorOptions(choseColor, color);
-    const colorButtons = document.querySelectorAll(".color-pickup-btn");
-    console.log(colorButtons);
-    for (const button of colorButtons) {
-        button.addEventListener("click", (e) => {
-            const color = e.currentTarget.value;
-            callChoseColor.style.backgroundColor = color;
-            callChoseColor.value = color;
-            choseColor.close();
-        });
-    }
-
     choseColorDiv.appendChild(callChoseColor);
     choseColorDiv.appendChild(choseColorLabel);
+    createDialogColorOptions(choseColor, color);
 
 
     const divDatePick = document.createElement("div");
@@ -365,6 +355,19 @@ export function projectPage() {
     addDialog.appendChild(form);
     main.appendChild(addDialog);
 
+    // i have to put it down here, because otherwise its querySelector wouldn't be connected to dom
+    const colorButtons = document.querySelectorAll(".color-pickup-btn");
+    for (const colorPick of colorButtons) {
+        colorPick.addEventListener("click", (e) => {
+            const color = e.currentTarget.dataset.id;
+            callChoseColor.style.backgroundColor = color;
+            callChoseColor.value = color;
+            choseColor.close();
+        });
+    }
+
+
+
     const divProjectBtn = document.createElement("div");
     divProjectBtn.classList.add("project-btn");
 
@@ -383,5 +386,4 @@ export function projectPage() {
     main.appendChild(emptyDiv);
     main.appendChild(projectDiv);
     refreshProjects(projectDiv);
-
 }

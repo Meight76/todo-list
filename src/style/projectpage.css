@@ -124,13 +124,45 @@ textarea {
 }
 
 .call-chose-color {
-    background-color: red;
+    background-color: #000;
+    anchor-name: --call-button;
+    position: relative;
+    box-shadow: inset 0 0 10px hsl(0 0% 0% / 0.3);
     border: 1px solid black;
     padding: 10px;
     border-radius: 50%;
     height: 16px;
     width: 16px;
 }
+
+#color-pick:open {
+    display: flex;
+    flex-wrap: wrap;
+    width: 6vw;
+    border: none;
+    gap: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px hsl(0 0% 0% / 0.2);
+    margin: 0;
+    position: absolute;
+    position-anchor: --call-button;
+    top: calc(anchor(top) + 20px);
+    left: calc(anchor(left) + 20px);
+
+    div {
+        width: 20px;
+        border-radius: 50%;
+        height: 20px;
+        border: 1px solid black;
+    }
+}
+
+#chose-color-div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 
 input[type="date"] {
     border: 1px solid hsl(from var(--light-white) h s calc(l - 30));
