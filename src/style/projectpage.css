@@ -16,7 +16,7 @@
     border: none;
     background-color: var(--secondary-color);
     border-radius: 8px;
-    padding: 5px 0 5px 0;
+    padding: 10px;
     width: min(40vw, 400px);
     align-self: start;
 
@@ -157,9 +157,11 @@ input[type="date"] {
 
 .project-item {
     box-shadow: 0 0 7px hsl(0 0% 0% / 0.2);
+    border: none;
     display: flex;
-    padding: 16px;
-    gap: 10px;
+    border-radius: 10px;
+    padding: 16px 50px 16px 16px;
+    justify-content: space-between;
     color: var(--project-item-text-color);
 
     p,
@@ -167,12 +169,40 @@ input[type="date"] {
         align-self: center;
     }
 
+    .project-header-info {
+        display: flex;
+        gap: 10px;
+    }
+
 }
 
 .project-div {
     display: flex;
+    gap: 10px;
     flex-direction: column;
     padding: 16px;
     grid-column: span 2;
+
+    overflow-y: auto;
+
+}
+
+#show-project-dialog:open {
+    color: var(--bright-white);
+    border-radius: 8px;
+    border: none;
+
+    #progress-date-row {
+    display: flex;
+    gap: 10px;
+
+    * {
+        align-self: center;
+    }
+}
+
+    &::backdrop {
+        background-color: hsl(0 0% 0% / 0.2);
+    }
 
 }

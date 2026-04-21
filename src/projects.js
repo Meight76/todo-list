@@ -1,6 +1,6 @@
 import { Todo, TodoList } from "./todos.js";
 import "./style/projectpage.css";
-import { resetDiv, createDivInputs } from "./helpFunctions.js";
+import { resetDiv, createDivInputs, cleanTags } from "./helpFunctions.js";
 import { main } from "./index.js";
 
 export default class project {
@@ -8,9 +8,10 @@ export default class project {
     constructor(title, color, dueDate, description) {
         this.title = title;
         this.color = color;
+        this.progress = 0;
         this.dueDate = dueDate;
         this.description = description;
-        this._id = crypto.randomUUID();
+        this.id = crypto.randomUUID();
         this.todos = new TodoList();
         project.#allProjects.push(this);
     }
@@ -26,27 +27,96 @@ export default class project {
 }
 
 export function refreshProjects(node) {
+
+    // a dialog to show in a more descriptive way our projects
+    const showProjectDialog = document.createElement("dialog");
+    showProjectDialog.setAttribute("id", "show-project-dialog");
+    showProjectDialog.setAttribute("closedby", "any");
+    showProjectDialog.classList.add("show-project-dialog");
+
+    const showTitle = document.createElement("h1");
+    const showProgress = document.createElement("h2");
+    const showDate = document.createElement("p");
+    const showDescription = document.createElement("p");
+    const showTodosDiv = document.createElement("div");
+
+    const showElements = [showTitle, showProgress, showDate, showDescription, showTodosDiv];
+
+    const divRowProgAndDate = document.createElement("div");
+    divRowProgAndDate.setAttribute("id", "progress-date-row");
+
+    divRowProgAndDate.appendChild(showProgress);
+    divRowProgAndDate.appendChild(showDate);
+
+    showProjectDialog.appendChild(showTitle);
+    showProjectDialog.appendChild(divRowProgAndDate);
+    showProjectDialog.appendChild(showDescription);
+    showProjectDialog.appendChild(showTodosDiv);
+
+    main.appendChild(showProjectDialog);
+
         node.textContent = "";
         const arrayProjects = project.globalProjects;
         for (const projectItem of arrayProjects) {
-            const divItem = document.createElement("div");
-            divItem.style.backgroundColor = projectItem.color;
-            divItem.classList.add("project-item");
+            const projectButton = document.createElement("button");
+            projectButton.style.backgroundColor = projectItem.color;
+            projectButton.classList.add("project-item");
+            projectButton.value = projectItem.id;
             const title = document.createElement("h2");
             title.textContent = projectItem.title
-            const line = document.createElement("div");
 
-            const description = document.createElement("p");
-            description.textContent = projectItem.description;
             const date = document.createElement("p");
             date.textContent = projectItem.dueDate.toDateString();
 
-            divItem.appendChild(title);
-            divItem.appendChild(line);
-            divItem.appendChild(date);
-            divItem.appendChild(description);
+            const progress = document.createElement("h2");
+            progress.classList.add("progress-info");
+            progress.textContent = `current: ${projectItem.progress}%`;
 
-            node.appendChild(divItem);
+            const headerInfo = document.createElement("div");
+            headerInfo.classList.add("project-header-info");
+
+            headerInfo.appendChild(title);
+            headerInfo.appendChild(date);
+
+            projectButton.appendChild(headerInfo);
+            projectButton.appendChild(progress);
+
+            projectButton.addEventListener("click", (e) => {
+                const projectId = e.currentTarget.value;
+                if (projectId === undefined) {
+                    console.log("couldn't solve id");
+                    return;
+                }
+                let thisProject = arrayProjects.filter(item => item.id === projectId);
+                thisProject = thisProject[0];
+                const thisProjectTodos = thisProject.todos;
+                cleanTags(showElements);
+                showTitle.textContent = thisProject.title;
+                showProgress.textContent = `Progress: ${thisProject.progress}%`;
+                showDate.textContent = thisProject.dueDate.toDateString();
+                showDescription.textContent = thisProject.description;
+
+
+                if (thisProjectTodos.getTodos().length !== 0) {
+                    for (const todo of thisProjectTodos) {
+                        const todoItem = document.createElement("div");
+                        todoItem.classList.add("todo-item");
+
+                        const todoTitle = document.createElement("h1");
+                        todoTitle.textContent = todo.title;
+                        const todoDate = document.createElement("p");
+                        todoDate.textContent = todo.date;
+                        const todoCheckButton = document.createElement("button");
+                        todoCheckButton.textContent = todo.check;
+
+                        showTodosDiv.appendChild(todoItem);
+                    }
+                }
+                showProjectDialog.style.backgroundColor = thisProject.color;
+                showProjectDialog.showModal();
+            });
+
+            node.appendChild(projectButton);
 
         }
     }

@@ -35,3 +35,9 @@ export function createDivInputs(id, name, classList, attributesObj) {
     }
     return input;
 }
+
+export function cleanTags(arrTagsReferences) {
+    for (const item of arrTagsReferences) {
+        item.textContent = "";
+    }
+}
