@@ -15,7 +15,7 @@
 *::after,
 *::before {
     font-family: inherit;
-    outline-color: var(--accent-color);
+    outline-color: var(--secondary-color);
 }
 
 body {

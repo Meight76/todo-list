@@ -197,6 +197,7 @@ input[type="date"] {
 #show-project-dialog:open {
     color: var(--bright-white);
     border-radius: 8px;
+    width: min(50vw, 500px);
     border: none;
     overflow-y: auto;
     display: flex;
@@ -228,6 +229,7 @@ input[type="date"] {
     border: 2px solid hsl(0 0% 95% / 0.4);
     border-radius: 10px;
     overflow-y: auto;
+    overflow-wrap: break-word;
     height: 70px;
     margin-top: 10px !important;
     padding: 5px;
@@ -255,8 +257,9 @@ input[type="date"] {
 .todos-div {
     border-radius: 10px;
     padding: 10px;
+    overflow-y: auto;
     margin-top: 10px;
-    height: 100px;
+    height: 150px;
     display: flex;
     border: 2px dashed hsl(0 0% 95% / 0.4);
 

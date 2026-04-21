@@ -41,3 +41,21 @@ export function cleanTags(arrTagsReferences) {
         item.textContent = "";
     }
 }
+
+export function createSelectOptions(selectNode, arrOptions, defaultOption) {
+    if (defaultOption) {
+        const option = document.createElement("option");
+        option.textContent = defaultOption;
+        option.setAttribute("selected", "");
+        option.value = "";
+        selectNode.appendChild(option);
+    }
+
+    for (const optionName of arrOptions) {
+        const option = document.createElement("option");
+        option.textContent = optionName;
+        option.value = optionName;
+        selectNode.appendChild(option);
+    }
+
+}

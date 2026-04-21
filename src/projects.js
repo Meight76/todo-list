@@ -1,6 +1,6 @@
 import { Todo, TodoList } from "./todos.js";
 import "./style/projectpage.css";
-import { resetDiv, createDivInputs, cleanTags } from "./helpFunctions.js";
+import { resetDiv, createDivInputs, cleanTags, createSelectOptions } from "./helpFunctions.js";
 import { main } from "./index.js";
 
 export default class project {
@@ -50,6 +50,81 @@ export function refreshProjects(node) {
     const dialogTodosAdd = document.createElement("dialog");
     dialogTodosAdd.setAttribute("id", "dialog-todo-add");
     dialogTodosAdd.setAttribute("closedby", "any");
+
+    const titleInputDiv = document.createElement("div");
+    titleInputDiv.setAttribute("id", "dialog-todo-title-input-div");
+    const titleInput = createDivInputs("dialog-todo-title-input", "dialog-todo-title-input",
+        ["dialog-todo-add-title"],
+        {   required: "",
+            maxlength: "30",
+            type: "text",
+            autofocus: "",
+            placeholder: "go to the gym!"
+        }
+    );
+    const titleInputLabel = document.createElement("label")
+    titleInputLabel.textContent = "Title:"
+    titleInputLabel.setAttribute("for", "dialog-todo-title-input");
+
+
+    const descriptionAreaDiv = document.createElement("div");
+    descriptionAreaDiv.setAttribute("id", "dialog-todo-description-area-div");
+    const descriptionArea = document.createElement("textarea");
+    descriptionArea.setAttribute("maxlength", "150");
+    descriptionArea.setAttribute("id", "dialog-todo-description-area");
+    const descriptionAreaLabel = document.createElement("label");
+    descriptionAreaLabel.textContent = "description";
+    descriptionAreaLabel.setAttribute("for", "dialog-todo-description-area");
+
+
+    const dueDateDiv = document.createElement("div");
+    dueDateDiv.setAttribute("id", "dialog-todo-due-date");
+    const dueDateInput = createDivInputs("dialog-todo-date-input", "dialog-todo-date-input",
+        ["date-input"],
+        {   required: "",
+            type: "date",
+        }
+    );
+    const dueDateLabel = document.createElement("label");
+    dueDateLabel.setAttribute("for", "dialog-todo-date-input");
+    dueDateLabel.textContent = "due date";
+
+    const prioritySelectDiv = document.createElement("div");
+    prioritySelectDiv.setAttribute("id", "dialog-todo-priority-div");
+    const prioritySelectLabel = document.createElement("label");
+    prioritySelectLabel.setAttribute("for", "priority-select");
+    prioritySelectLabel.textContent = "priority level";
+    const prioritySelect = document.createElement("select");
+    prioritySelect.setAttribute("id", "priority-select");
+    prioritySelect.setAttribute("name", "priority-select");
+    const priorityOptions = ["low", "medium", "high"];
+    createSelectOptions(prioritySelect, priorityOptions, "priority level");
+
+
+    titleInputDiv.appendChild(titleInputLabel);
+    titleInputDiv.appendChild(titleInput);
+    descriptionAreaDiv.appendChild(descriptionAreaLabel);
+    descriptionAreaDiv.appendChild(descriptionArea);
+    dueDateDiv.appendChild(dueDateLabel);
+    dueDateDiv.appendChild(dueDateInput);
+    prioritySelectDiv.appendChild(prioritySelectLabel);
+    prioritySelectDiv.appendChild(prioritySelect);
+
+    const addDialogHeader = document.createElement("h1");
+    addDialogHeader.classList.add("todo-dialog-header");
+    addDialogHeader.textContent = "Add todo";
+
+    const addDialogBtn = document.createElement("button");
+    addDialogBtn.classList.add("add-todo-btn");
+    addDialogBtn.textContent = "Create todo";
+
+
+    dialogTodosAdd.appendChild(addDialogHeader);
+    dialogTodosAdd.appendChild(titleInputDiv);
+    dialogTodosAdd.appendChild(dueDateDiv);
+    dialogTodosAdd.appendChild(prioritySelectDiv);
+    dialogTodosAdd.appendChild(descriptionAreaDiv);
+    dialogTodosAdd.appendChild(addDialogBtn);
 
     const showTodosAddBtn = document.createElement("button");
     showTodosAddBtn.setAttribute("id", "todos-add-btn");
@@ -181,8 +256,13 @@ export function projectPage() {
     divTitleInput.classList.add("add-dialog-div");
 
     const titleInput = createDivInputs("title", "title", ["add-dialog-title"],
-        { required: "",});
-    titleInput.setAttribute("type", "text");
+        {   required: "",
+            type: "text",
+            minlength: "5",
+            maxlength: "30",
+            placeholder: "study for the exam",
+        });
+    // titleInput.setAttribute("type", "text");
     const titleLabel = document.createElement("label");
     titleLabel.setAttribute("for", "title");
     titleLabel.textContent = "title:";
@@ -199,8 +279,7 @@ export function projectPage() {
     const descriptionArea = document.createElement("textarea");
     descriptionArea.classList.add("add-dialog-description");
     descriptionArea.setAttribute("id", "description");
-    descriptionArea.setAttribute("max", "300");
-    descriptionArea.setAttribute("min", "50");
+    descriptionArea.setAttribute("maxlength", "150");
 
     divDescriptionArea.appendChild(descriptionLabel);
     divDescriptionArea.appendChild(descriptionArea);
