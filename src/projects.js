@@ -38,12 +38,28 @@ export function refreshProjects(node) {
     const showProgress = document.createElement("h2");
     const showDate = document.createElement("p");
     const showDescription = document.createElement("p");
+    showDescription.setAttribute("id", "show-project-dialog-description");
     const showTodosDiv = document.createElement("div");
+    showTodosDiv.classList.add("todos-div");
 
     const showElements = [showTitle, showProgress, showDate, showDescription, showTodosDiv];
 
     const divRowProgAndDate = document.createElement("div");
     divRowProgAndDate.setAttribute("id", "progress-date-row");
+
+    const dialogTodosAdd = document.createElement("dialog");
+    dialogTodosAdd.setAttribute("id", "dialog-todo-add");
+    dialogTodosAdd.setAttribute("closedby", "any");
+
+    const showTodosAddBtn = document.createElement("button");
+    showTodosAddBtn.setAttribute("id", "todos-add-btn");
+    showTodosAddBtn.classList.add("show-todos-btn");
+    showTodosAddBtn.textContent = "Add todo";
+    showTodosAddBtn.addEventListener("click", () => {
+        dialogTodosAdd.showModal();
+    });
+
+    main.appendChild(dialogTodosAdd);
 
     divRowProgAndDate.appendChild(showProgress);
     divRowProgAndDate.appendChild(showDate);
@@ -51,6 +67,7 @@ export function refreshProjects(node) {
     showProjectDialog.appendChild(showTitle);
     showProjectDialog.appendChild(divRowProgAndDate);
     showProjectDialog.appendChild(showDescription);
+    showProjectDialog.appendChild(showTodosAddBtn);
     showProjectDialog.appendChild(showTodosDiv);
 
     main.appendChild(showProjectDialog);
@@ -111,6 +128,11 @@ export function refreshProjects(node) {
 
                         showTodosDiv.appendChild(todoItem);
                     }
+                } else {
+                    const para = document.createElement("p");
+                    para.textContent = "You don't currently have any todos!";
+                    para.classList.add("para-is-empty");
+                    showTodosDiv.appendChild(para);
                 }
                 showProjectDialog.style.backgroundColor = thisProject.color;
                 showProjectDialog.showModal();
