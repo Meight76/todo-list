@@ -196,7 +196,7 @@ input[type="date"] {
 
 #show-project-dialog:open {
     color: var(--bright-white);
-    border-radius: 8px;
+    border-radius: 10px;
     width: min(50vw, 500px);
     border: none;
     overflow-y: auto;
@@ -220,7 +220,7 @@ input[type="date"] {
 }
 
     &::backdrop {
-        background-color: hsl(0 0% 0% / 0.2);
+        background-color: hsl(0 0% 0% / 0.1);
     }
 
 }
@@ -274,3 +274,27 @@ input[type="date"] {
 
 }
 
+#dialog-todo-add:open {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: hsl(0 0% 0% / 0.4);
+    border-radius: 10px;
+    border: none;
+    width: min(50vw, 500px);
+
+    div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &::backdrop {
+        background-color: hsl(0 0% 0% / 0.2);
+    }
+
+    >h1 {
+        text-align: center;
+        text-transform: uppercase;
+        color: var(--secondary-color);
+    }
+}
