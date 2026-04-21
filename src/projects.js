@@ -368,8 +368,8 @@ export function projectPage() {
 
 
 
-    const divProjectBtn = document.createElement("div");
-    divProjectBtn.classList.add("project-btn");
+    const addProjectBtnDiv = document.createElement("div");
+    addProjectBtnDiv.classList.add("project-btn");
 
     const createProjectBtn = document.createElement("button");
     createProjectBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title></title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>` + `<span>Add Project</span>`;
@@ -378,12 +378,16 @@ export function projectPage() {
         addDialog.showModal();
     });
 
-    divProjectBtn.appendChild(createProjectBtn);
+    addProjectBtnDiv.appendChild(createProjectBtn);
 
-    const emptyDiv = document.createElement("div");
+    const removeProjectBtnDiv = document.createElement("div");
+    const removeBtn = document.createElement("button");
+    removeBtn.classList.add("remove-project-btn");
+    removeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minus-thick</title><path d="M20 14H4V10H20" /></svg> <span>Remove project</span>`
+    removeProjectBtnDiv.appendChild(removeBtn);
 
-    main.appendChild(divProjectBtn);
-    main.appendChild(emptyDiv);
+    main.appendChild(addProjectBtnDiv);
+    main.appendChild(removeProjectBtnDiv);
     main.appendChild(projectDiv);
     refreshProjects(projectDiv);
 }
