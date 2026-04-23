@@ -37,7 +37,7 @@ export class Todo {
 
     // set day, month, year, hour and returns as string
     get date() {
-        return this._dueDate.toDateString();
+        return this._dueDate;
     }
     set date([day, month, year, hour]) {
         const currentDate = new Date();
@@ -71,11 +71,7 @@ export class Todo {
         return this._check;
     }
     toggleCheck() {
-        if (this._check === false) {
-            this._check = true;
-        } else {
-            this._check = true;
-        }
+        this._check = !this._check;
     }
 
     get notes() {
@@ -100,7 +96,7 @@ export class TodoList {
             if (!(obj instanceof Todo)) {
                 console.log("ERROR: object is not an instance of todo");
                 console.log(obj);
-            } else if(!this.#isNameAlreadyExisting(obj.title)) {
+            } else if(this.#isNameAlreadyExisting(obj.title)) {
                 console.log(`ERROR: ${obj.title} already exists`);
             } else {
                 this.#todos.push(obj);
@@ -114,7 +110,7 @@ export class TodoList {
         }
     }
     #isNameAlreadyExisting(name) {
-        return this.#todos.some( element => element.title === name );
+        return this.#todos.some(element => element.title === name);
     }
 }
 

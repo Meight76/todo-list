@@ -329,10 +329,12 @@ input[type="date"] {
 .todos-div {
     border-radius: 10px;
     padding: 10px;
+    gap: 10px;
     overflow-y: auto;
     margin-top: 10px;
     height: 150px;
     display: flex;
+    flex-direction: column;
     border: 2px dashed hsl(0 0% 95% / 0.4);
 
     &:has(.para-is-empty) {
@@ -342,6 +344,25 @@ input[type="date"] {
     .para-is-empty {
         align-self: center;
         color: hsl(0 0% 95% / 0.7);
+    }
+
+    .todo-item {
+        background-color: indigo;
+        padding: 10px;
+        justify-content: space-between;
+        border: none;
+        border-radius: 15px;
+        display: flex;
+
+       button {
+        border: none;
+        padding: 0;
+
+
+        svg {
+            width: 24px;
+        }
+       }
     }
 
 }
@@ -357,11 +378,36 @@ input[type="date"] {
 
     div {
         display: flex;
+        gap: 5px;
         flex-direction: column;
     }
 
     &::backdrop {
         background-color: hsl(0 0% 0% / 0.2);
+    }
+
+    >button {
+        border: none;
+        color: white;
+        margin-top: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+        padding: 7px;
+        border-radius: 10px;
+        background-color: var(--secondary-color);
+
+        &:hover {
+            background-color: hsl(from var(--secondary-color) h s calc(l - 10));
+        }
+        &:active {
+            background-color: hsl(from var(--secondary-color) h s calc(l - 20));
+        }
+
+
+    }
+    select {
+        border-radius: 10px;
+        padding: 7px;
     }
 
     >h1 {

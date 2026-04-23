@@ -78,7 +78,7 @@ export function refreshProjects(node) {
     descriptionArea.setAttribute("maxlength", "150");
     descriptionArea.setAttribute("id", "dialog-todo-description-area");
     const descriptionAreaLabel = document.createElement("label");
-    descriptionAreaLabel.textContent = "description";
+    descriptionAreaLabel.textContent = "description:";
     descriptionAreaLabel.setAttribute("for", "dialog-todo-description-area");
 
 
@@ -92,13 +92,13 @@ export function refreshProjects(node) {
     );
     const dueDateLabel = document.createElement("label");
     dueDateLabel.setAttribute("for", "dialog-todo-date-input");
-    dueDateLabel.textContent = "due date";
+    dueDateLabel.textContent = "due date:";
 
     const prioritySelectDiv = document.createElement("div");
     prioritySelectDiv.setAttribute("id", "dialog-todo-priority-div");
     const prioritySelectLabel = document.createElement("label");
     prioritySelectLabel.setAttribute("for", "priority-select");
-    prioritySelectLabel.textContent = "priority level";
+    prioritySelectLabel.textContent = "priority level:";
     const prioritySelect = document.createElement("select");
     prioritySelect.setAttribute("id", "priority-select");
     prioritySelect.setAttribute("name", "priority-select");
@@ -122,6 +122,36 @@ export function refreshProjects(node) {
     const addDialogBtn = document.createElement("button");
     addDialogBtn.classList.add("add-todo-btn");
     addDialogBtn.textContent = "Create todo";
+    addDialogBtn.addEventListener("click", () => {
+        let allProject = project.globalProjects;
+        let title = titleInput.value;
+        if (title === "") {
+            title = "no name";
+        }
+        let date = new Date(dueDateInput.value);
+        if (date === "") {
+            date = new Date();
+        }
+        let description = descriptionArea.value;
+        let priority = prioritySelect.value;
+        if (priority === "") {
+            priority = "low";
+        }
+        titleInput.value = "";
+        dueDateInput.value = "";
+        descriptionArea.value = "";
+        prioritySelect.value = "";
+
+        const todoToAdd = new Todo(title, description, date, priority, false);
+
+        const projectId = showProjectDialog.dataset.id;
+        const projectReference = (allProject.filter(item => item.id === projectId))[0];
+        projectReference.todos.addTodo(todoToAdd);
+        dialogTodosAdd.close();
+        refreshTodos(projectReference.todos.getTodos(), showTodosDiv);
+        console.log(projectReference.todos.getTodos());
+
+    });
 
 
     dialogTodosAdd.appendChild(addDialogHeader);
@@ -195,19 +225,7 @@ export function refreshProjects(node) {
 
 
                 if (thisProjectTodos.getTodos().length !== 0) {
-                    for (const todo of thisProjectTodos) {
-                        const todoItem = document.createElement("div");
-                        todoItem.classList.add("todo-item");
-
-                        const todoTitle = document.createElement("h1");
-                        todoTitle.textContent = todo.title;
-                        const todoDate = document.createElement("p");
-                        todoDate.textContent = todo.date;
-                        const todoCheckButton = document.createElement("button");
-                        todoCheckButton.textContent = todo.check;
-
-                        showTodosDiv.appendChild(todoItem);
-                    }
+                    refreshTodos(thisProjectTodos.getTodos(), showTodosDiv);
                 } else {
                     const para = document.createElement("p");
                     para.textContent = "You don't currently have any todos!";
@@ -215,6 +233,7 @@ export function refreshProjects(node) {
                     showTodosDiv.appendChild(para);
                 }
                 showProjectDialog.style.backgroundColor = thisProject.color;
+                showProjectDialog.dataset.id = projectId;
                 showProjectDialog.showModal();
             });
 
@@ -223,10 +242,55 @@ export function refreshProjects(node) {
         }
     }
 
+function alterCheckButton (todo, button) {
+    if (todo.check === true) {
+        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>check-bold</title><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" /></svg>`
+    } else {
+        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>exclamation-thick</title><path d="M10 3H14V14H10V3M10 21V17H14V21H10Z" /></svg>`
+    }
+}
+
+
+function refreshTodos(arrTodos, divNode) {
+    divNode.textContent = "";
+    for (const todo of arrTodos) {
+        const todoItem = document.createElement("div");
+        todoItem.classList.add("todo-item");
+
+        const todoTitle = document.createElement("h1");
+        todoTitle.textContent = todo.title;
+        const todoDate = document.createElement("p");
+        console.log(todo);
+        console.log(todo.date);
+        todoDate.textContent = todo.date.toDateString();
+        const todoCheckButton = document.createElement("button");
+        todoCheckButton.dataset.id = todo.id;
+        todoCheckButton.addEventListener("click", (e) => {
+            const todoId = todoCheckButton.dataset.id;
+            const showProjectDialog = document.querySelector("#show-project-dialog");
+            const currentTodoProjectId = showProjectDialog.dataset.id;
+            const allProject = project.globalProjects;
+            const currentProject = (allProject.filter(item => item.id === currentTodoProjectId))[0];
+            const allTodos = currentProject.todos.getTodos();
+            const currentTodo = (allTodos.filter(item => item.id === todoId))[0];
+            currentTodo.toggleCheck();
+            alterCheckButton(currentTodo, e.target);
+        });
+        todoItem.appendChild(todoTitle);
+        todoItem.appendChild(todoDate);
+        todoItem.appendChild(todoCheckButton);
+        alterCheckButton(todo, todoCheckButton);
+        divNode.appendChild(todoItem);
+}
+}
+
+
 export function projectPage() {
     resetDiv(main);
 
     const testProjectItem = new project("example", "#000000", new Date("2026-04-22"),"Just for have a base looking" );
+    const testTodoItem = new Todo("whatever", "whatever desc", new Date("2026-04-22"), "medium", false);
+    testProjectItem.todos.addTodo(testTodoItem);
     const allProject = project.globalProjects
     const projectDiv = document.createElement("div");
     projectDiv.setAttribute("id", "project-div");
@@ -338,10 +402,21 @@ export function projectPage() {
     addButton.classList.add("add-btn");
     addButton.addEventListener("click", (e) => {
         e.preventDefault();
-        const title = titleInput.value;
-        const color = callChoseColor.value;
-        const date = new Date(datePickInput.value);
-        const description = descriptionArea.value;
+        let title = titleInput.value;
+        if (title === "") {
+            title = "no name";
+        }
+        let color = callChoseColor.value;
+        if (color === "") {
+            color = "#000000";
+        }
+        let date;
+        if (datePickInput.value === "") {
+            date = new Date();
+        } else {
+            date = new Date(datePickInput.value);
+        }
+        let description = descriptionArea.value;
         new project(title, color, date, description);
         console.log(project.globalProjects);
         refreshProjects(projectDiv);
