@@ -24,6 +24,11 @@ export default class project {
     } static get globalProjects() {
         return project.#allProjects.slice();
     }
+
+    static removeProject(id) {
+        return project.#allProjects.splice((project.#allProjects
+            .filter(item => item.id === id))[0], 1);
+    }
 }
 
 export function refreshProjects(node) {
@@ -384,10 +389,35 @@ export function projectPage() {
     const removeBtn = document.createElement("button");
     removeBtn.classList.add("remove-project-btn");
     removeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minus-thick</title><path d="M20 14H4V10H20" /></svg> <span>Remove project</span>`
+    let isRemoveBtnClicked = false;
+    removeBtn.addEventListener("click", () => {
+        if (!isRemoveBtnClicked) {
+            isRemoveBtnClicked = true;
+            const projects = document.querySelectorAll(".project-item");
+            const showDialog = document.querySelector("#show-project-dialog");
+            for (const projectItem of projects) {
+                const removeBtn = document.createElement("button");
+                removeBtn.textContent = "Remove";
+                removeBtn.classList.add("remove-project-item-btn");
+                removeBtn.value = project.value;
+                removeBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const id = e.currentTarget.value;
+                    project.removeProject(id);
+                    refreshProjects(projectDiv);
+                });
+                projectItem.append(removeBtn);
+            }
+        } else {
+            refreshProjects(projectDiv);
+            isRemoveBtnClicked = false;
+        }
+    });
     removeProjectBtnDiv.appendChild(removeBtn);
 
     main.appendChild(addProjectBtnDiv);
     main.appendChild(removeProjectBtnDiv);
     main.appendChild(projectDiv);
     refreshProjects(projectDiv);
-}
+        }
+

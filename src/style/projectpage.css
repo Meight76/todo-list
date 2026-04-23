@@ -209,6 +209,7 @@ input[type="date"] {
 .project-item {
     box-shadow: 0 0 7px hsl(0 0% 0% / 0.2);
     border: none;
+    position: relative;
     display: flex;
     border-radius: 10px;
     padding: 16px 50px 16px 16px;
@@ -223,6 +224,26 @@ input[type="date"] {
     .project-header-info {
         display: flex;
         gap: 10px;
+    }
+
+    .remove-project-item-btn {
+        position: absolute;
+        top: -15px;
+        background-color: red;
+        color: var(--bright-white);
+        font-weight: 800;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        right: 0px;
+
+        &:hover {
+            background-color: hsl(from red h s calc(l - 10));
+        }
+        &:active {
+            background-color: hsl(from red h s calc(l -20));
+        }
+
     }
 
     &:hover {
