@@ -1,17 +1,42 @@
-import { Todo } from "./todos.js";
+import Todo from "./todoModel";
 
 export default class Project {
-    constructor(title, color, dueDate, description) {
+    constructor(title, color, progress, id, dueDate, description) {
+        if (id.length !== 36) {
+            id = "";
+            console.log(`ERROR: unvalid id for Project`);
+        }
         this._title = title;
         this._color = color;
-        this._progress = 0;
+        this._progress = progress || 0;
         this._dueDate = dueDate;
         this._description = description;
-        this._id = crypto.randomUUID();
+        this._id = id || crypto.randomUUID();
         this._todos = [];
     }
 
-    getAllTodo() {
+    static reconstructor(arrProj) {
+        const hydrate = arrProj.map(item => {
+            const title = item._title;
+            const color = item._color;
+            const progress = item._progress;
+            const dueDate = new Date(item._dueDate);
+            const description = item._description;
+            const id = item._id;
+            const todos = item._todos;
+            const hidProj = new Project(title, color, progress, id, dueDate, description);
+            hidProj.addTodo(Todo.reconstructor(todos));
+            return hidProj;
+    });
+
+return hydrate;
+}
+
+    get id() {
+        return this._id;
+    }
+
+    getTodos() {
         return this._todos.slice();
     }
 

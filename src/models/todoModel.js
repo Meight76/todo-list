@@ -1,14 +1,29 @@
-export class Todo {
-    constructor(title, description, dueDate, priority, check, notes) {
+export default class Todo {
+    constructor(title, description, dueDate, id, priority, check, notes) {
         // i call setter for setting my private properties
         // that's because my validations live in setters
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.id = crypto.randomUUID();
+        this._id = id || crypto.randomUUID();
         this.priority = priority;
         this.check = check;
         this.notes = notes;
+    }
+
+    static reconstructor(arrObjs) {
+        const hydrate = arrObjs.map(item => {
+        const title = item._title;
+        const description = item._description;
+        const dueDate = new Date(item._dueDate);
+        const id = item._id;
+        const priority = item._priority;
+        const check = item._check;
+        const notes = item._notes;
+        const HydTodo = new Todo(title, description, dueDate, id, priority, check, notes);
+        return HydTodo;
+    });
+    return hydrate;
     }
 
     get title() {
@@ -89,6 +104,10 @@ export class Todo {
     }
     toggleCheck() {
         this._check = !this._check;
+    }
+
+    get id() {
+        return this._id;
     }
 
     get notes() {
