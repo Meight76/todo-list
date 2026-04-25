@@ -353,14 +353,29 @@ input[type="date"] {
         border: none;
         border-radius: 15px;
         display: flex;
+        align-items: center;
 
        button {
         border: none;
         padding: 0;
+        background-color: transparent;
 
 
         svg {
-            width: 24px;
+            width: 30px;
+            fill: red;
+
+            &:hover {
+                fill: hsl(from red h s calc(l - 10));
+            }
+
+            &.is-checked {
+                fill: lime;
+
+                &:hover {
+                    fill: hsl(from lime h s calc(l - 10));
+                }
+            }
         }
        }
     }

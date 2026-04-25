@@ -32,7 +32,7 @@ export function homepage() {
         });
 
         projectItem.appendChild(title);
-        projectsList.appendChild(projectItem);
+        projectsDiv.appendChild(projectItem);
     }
 
     main.appendChild(projectsDiv);

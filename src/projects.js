@@ -128,9 +128,11 @@ export function refreshProjects(node) {
         if (title === "") {
             title = "no name";
         }
-        let date = new Date(dueDateInput.value);
-        if (date === "") {
+        let date;
+        if (dueDateInput.value === "") {
             date = new Date();
+        } else {
+            date = new Date(dueDateInput.value);
         }
         let description = descriptionArea.value;
         let priority = prioritySelect.value;
@@ -245,8 +247,13 @@ export function refreshProjects(node) {
 function alterCheckButton (todo, button) {
     if (todo.check === true) {
         button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>check-bold</title><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" /></svg>`
+        const svg = button.querySelector("svg");
+        console.log(svg);
+        svg.classList.add("is-checked");
+
     } else {
         button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>exclamation-thick</title><path d="M10 3H14V14H10V3M10 21V17H14V21H10Z" /></svg>`
+
     }
 }
 
@@ -259,10 +266,14 @@ function refreshTodos(arrTodos, divNode) {
 
         const todoTitle = document.createElement("h1");
         todoTitle.textContent = todo.title;
+        if (todo.title.length > 15) {
+            todoTitle.style.fontSize = "1rem";
+        }
         const todoDate = document.createElement("p");
         console.log(todo);
         console.log(todo.date);
         todoDate.textContent = todo.date.toDateString();
+        console.log(todo.date);
         const todoCheckButton = document.createElement("button");
         todoCheckButton.dataset.id = todo.id;
         todoCheckButton.addEventListener("click", (e) => {
@@ -274,7 +285,8 @@ function refreshTodos(arrTodos, divNode) {
             const allTodos = currentProject.todos.getTodos();
             const currentTodo = (allTodos.filter(item => item.id === todoId))[0];
             currentTodo.toggleCheck();
-            alterCheckButton(currentTodo, e.target);
+            console.log(e.target);
+            alterCheckButton(currentTodo, e.currentTarget);
         });
         todoItem.appendChild(todoTitle);
         todoItem.appendChild(todoDate);
