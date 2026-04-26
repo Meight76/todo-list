@@ -22,7 +22,7 @@ export function shuffle(array) {
     return array;
 }
 
-export function createDivInputs(id, name, classList, attributesObj) {
+export function createInput(id, name, classList, attributesObj) {
     const input = document.createElement("input");
     input.setAttribute("id", id);
     input.setAttribute("name", name);

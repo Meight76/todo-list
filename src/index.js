@@ -1,10 +1,11 @@
 import "./style/style.css";
-import { homepage } from "./homepage.js";
-import { projectPage } from "./projects.js";
+import homepageUi from "./ui/homepage.js";
+import  projectUi  from "./ui/projectUi.js";
 import { todosPage } from "./todos.js";
+import { resetDiv } from "./helpFunctions.js";
 export const main = document.querySelector("#main-content");
 
-homepage();
+homepageUi();
 
 const navHome = document.querySelector("#nav-home-btn");
 const navProject = document.querySelector("#nav-project-btn");
@@ -13,9 +14,18 @@ const navCustomize = document.querySelector("#nav-customize-btn");
 const navSettings = document.querySelector("#nav-settings-btn");
 const navProfile = document.querySelector("#nav-profile-btn");
 
-navHome.addEventListener("click", homepage);
-navProject.addEventListener("click", projectPage);
-navTodos.addEventListener("click", todosPage);
+navHome.addEventListener("click", () => {
+    resetDiv(main);
+    homepageUi();
+});
+navProject.addEventListener("click", () => {
+    resetDiv(main);
+    projectUi();
+});
+navTodos.addEventListener("click", () => {
+    resetDiv(main);
+    todosPage()
+});
 
 // i'll have a web page using tab navigation
 // user should be able to navigate between create/delete a Todo,

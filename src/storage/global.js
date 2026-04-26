@@ -1,4 +1,4 @@
-import Project from "../models/projectModel";
+import Project from "../models/projectModel.js";
 
 export default class Global {
     static _allProjects = [];

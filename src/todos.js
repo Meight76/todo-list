@@ -1,6 +1,6 @@
 import { main } from "./index.js";
 import { createTag, resetDiv } from "./helpFunctions.js";
-import project from "./projects.js";
+import Project from "./models/projectModel.js";
 import "./style/todopage.css";
 
 export class Todo {
@@ -117,7 +117,7 @@ export class TodoList {
 export function todosPage() {
     resetDiv(main);
     // the project class has an array that stores all projects existing
-    const projectList = project.globalProjects;
+    const projectList = Project.globalProjects;
     let allTodos = [];
     // get the todoList object from all project object
     for (const project of projectList) {

@@ -1,6 +1,6 @@
 import { Todo, TodoList } from "./todos.js";
 import "./style/projectpage.css";
-import { resetDiv, createDivInputs, cleanTags, createSelectOptions, createDialogColorOptions } from "./helpFunctions.js";
+import { resetDiv, createInput, cleanTags, createSelectOptions, createDialogColorOptions } from "./helpFunctions.js";
 import { main } from "./index.js";
 
 export default class project {
@@ -58,7 +58,7 @@ export function refreshProjects(node) {
 
     const titleInputDiv = document.createElement("div");
     titleInputDiv.setAttribute("id", "dialog-todo-title-input-div");
-    const titleInput = createDivInputs("dialog-todo-title-input", "dialog-todo-title-input",
+    const titleInput = createInput("dialog-todo-title-input", "dialog-todo-title-input",
         ["dialog-todo-add-title"],
         {   required: "",
             maxlength: "30",
@@ -84,7 +84,7 @@ export function refreshProjects(node) {
 
     const dueDateDiv = document.createElement("div");
     dueDateDiv.setAttribute("id", "dialog-todo-due-date");
-    const dueDateInput = createDivInputs("dialog-todo-date-input", "dialog-todo-date-input",
+    const dueDateInput = createInput("dialog-todo-date-input", "dialog-todo-date-input",
         ["date-input"],
         {   required: "",
             type: "date",
@@ -336,7 +336,7 @@ export function projectPage() {
     const divTitleInput = document.createElement("div");
     divTitleInput.classList.add("add-dialog-div");
 
-    const titleInput = createDivInputs("title", "title", ["add-dialog-title"],
+    const titleInput = createInput("title", "title", ["add-dialog-title"],
         {   required: "",
             type: "text",
             minlength: "5",

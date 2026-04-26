@@ -1,4 +1,5 @@
-import Todo from "./todoModel";
+import Todo from "./todoModel.js";
+import Global from "../storage/global.js";
 
 export default class Project {
     constructor(title, color, progress, id, dueDate, description) {
@@ -9,10 +10,11 @@ export default class Project {
         this._title = title;
         this._color = color;
         this._progress = progress || 0;
-        this._dueDate = dueDate;
+        this._dueDate = dueDate || new Date();
         this._description = description;
         this._id = id || crypto.randomUUID();
         this._todos = [];
+        Global.addProject(this);
     }
 
     static reconstructor(arrProj) {
@@ -26,6 +28,7 @@ export default class Project {
             const todos = item._todos;
             const hidProj = new Project(title, color, progress, id, dueDate, description);
             hidProj.addTodo(Todo.reconstructor(todos));
+            Global.addProject(hidProj);
             return hidProj;
     });
 
@@ -34,6 +37,21 @@ return hydrate;
 
     get id() {
         return this._id;
+    }
+    get date() {
+        return this._dueDate;
+    }
+    get title() {
+        return this._title;
+    }
+    get color() {
+        return this._color;
+    }
+    get description() {
+        return this._description;
+    }
+    get progress() {
+        return this._progress;
     }
 
     getTodos() {
