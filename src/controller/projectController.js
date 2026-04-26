@@ -1,4 +1,5 @@
 import Project from "../models/projectModel.js";
+import Global from "../storage/global.js";
 import { renderProjectDiv, projectDiv, updateProjects } from "../ui/projectUi.js";
 
 export const color = ["#1c0705", "#ea8350", "#664d65", "#7f3320", "#39544b",
@@ -18,6 +19,15 @@ export default function contollerProjectUi() {
     const addDialogColorBtns = document.querySelectorAll(".color-pickup-btn");
     const addDialogDateInput = document.querySelector("#add-dialog-date");
     const addDialogAddBtn = document.querySelector(".add-dialog-add-btn");
+    const removeProjectBtn = document.querySelector(".remove-project-btn");
+    let allProjectItems = getProjectItem();
+    const showProjectDialog = document.querySelector("#show-project-dialog");
+    const showProjectTitle = document.querySelector("#show-dialog-title");
+    const showProjectProgress = document.querySelector("#show-dialog-progress");
+    const showProjectDate = document.querySelector("#show-dialog-date");
+    const showProjectDescription = document.querySelector("#show-dialog-description");
+    const showProjectModeInfo = document.querySelector("#show-dialog-change-mode-info");
+    const showProjectBtnChange = document.querySelector("#show-dialog-change-mode-btn");
 
     createProjectBtn.addEventListener("click", () => {
         addProjectDialog.showModal();
@@ -47,16 +57,129 @@ export default function contollerProjectUi() {
         const title = addDialogTitleInput.value;
         const description = addDialogDescriptionArea.value;
         const color = addDialogCallColorBtn.value;
-        const date = new Date(addDialogDateInput.value);
+        const date = addDialogDateInput.value === "" ? new Date() : addDialogDateInput.valueAsDate;
         const project = new Project(title, color, "", "", date, description);
         console.log(project);
 
         addDialogTitleInput.value = "";
         addDialogDescriptionArea.value = "";
-        addDialogCallColorBtn.value = "";
+        addDialogCallColorBtn.value = "#000000";
         addDialogDateInput.value = "";
         addProjectDialog.close();
         console.log(projectDiv);
         updateProjects(projectDiv);
+        allProjectItems = getProjectItem();
+        ProjectItemsEvent(allProjectItems);
     });
+
+    allProjectItems = getProjectItem();
+    ProjectItemsEvent(allProjectItems);
+
+    let isRemoveBtnPressed = false;
+    removeProjectBtn.addEventListener("click", () => {
+        if (isRemoveBtnPressed) {
+            updateProjects(projectDiv);
+            allProjectItems = getProjectItem();
+            ProjectItemsEvent(allProjectItems);
+            isRemoveBtnPressed = !isRemoveBtnPressed;
+            console.log("yes");
+            return;
+        }
+        isRemoveBtnPressed = !isRemoveBtnPressed;
+        allProjectItems = document.querySelectorAll(".project-item");
+        for (const projectItem of allProjectItems) {
+            const deleteBtn = document.createElement("button");
+            deleteBtn.classList.add("remove-project-item-btn");
+            deleteBtn.dataset.id = projectItem.dataset.id;
+            deleteBtn.textContent = "Remove";
+            deleteBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                Global.removeProjectById(e.currentTarget.dataset.id);
+                updateProjects(projectDiv);
+                allProjectItems = getProjectItem();
+                ProjectItemsEvent(allProjectItems);
+            });
+            projectItem.appendChild(deleteBtn);
+        }
+    });
+
+    function ProjectItemsEvent(arrProjectItem) {
+        for (const project of arrProjectItem) {
+            project.addEventListener("click", (e) => {
+                prepareShowModal(Global.getProjectById(project.dataset.id));
+                showProjectDialog.showModal();
+            });
+        }
+    }
+
+    function getProjectItem() {
+        return document.querySelectorAll(".project-item");
+    }
+
+    function prepareShowModal(projObj) {
+        console.log(projObj);
+        showProjectDialog.dataset.id = projObj.id;
+        showProjectTitle.value = projObj.title;
+
+        showProjectProgress.textContent = projObj.progress;
+
+        const month = String(projObj.date.getMonth() + 1).padStart(2, "0");
+        const day = String(projObj.date.getDate()).padStart(2, "0");
+        const year = projObj.date.getFullYear();
+
+        showProjectDate.value = `${year}-${month}-${day}`;
+
+        showProjectDescription.value = projObj.description;
+
+        let mode = showProjectBtnChange.dataset.id;
+
+        showProjectBtnChange.addEventListener("click", () => {
+            mode = mode === "view" ? "edit" : "view";
+            if (mode === "edit") {
+                removeInputsReadonly();
+                showProjectModeInfo.textContent = "editing";
+                showProjectBtnChange.textContent = "view mode";
+            } else {
+                setInputsReadonly();
+                showProjectModeInfo.textContent = "visualize";
+                showProjectBtnChange.textContent = "edit mode";
+            }
+        });
+
+        function setInputsReadonly() {
+            showProjectDate.setAttribute("readonly", "");
+            showProjectDescription.setAttribute("readonly", "");
+            showProjectTitle.setAttribute("readonly", "");
+        }
+        function removeInputsReadonly() {
+            showProjectDate.removeAttribute("readonly");
+            showProjectDescription.removeAttribute("readonly");
+            showProjectTitle.removeAttribute("readonly");
+        }
+    }
+    showProjectDate.addEventListener("change", (e) => {
+        const projectId = showProjectDialog.dataset.id;
+        const project = Global.getProjectById(projectId);
+        project.date = showProjectDate.valueAsDate;
+        updateProjectDiv(projectDiv);
+    });
+    showProjectDescription.addEventListener("change", (e) => {
+        const projectId = showProjectDialog.dataset.id;
+        const project = Global.getProjectById(projectId);
+        project.description = showProjectDescription.value;
+        updateProjectDiv(projectDiv);
+    });
+    showProjectTitle.addEventListener("change", (e) => {
+        const projectId = showProjectDialog.dataset.id;
+        const project = Global.getProjectById(projectId);
+        project.title = showProjectTitle.value;
+        updateProjectDiv(projectDiv);
+    });
+
+    function updateProjectDiv(projDiv) {
+        allProjectItems = getProjectItem();
+        updateProjects(projectDiv);
+        ProjectItemsEvent(allProjectItems);
+    }
 }
+

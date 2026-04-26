@@ -35,4 +35,32 @@ export default class Global {
     static getProjectById(projId) {
         return (this._allProjects.filter(item => item.id === projId))[0];
     }
+    static editProjectbyId(projId, changesObj) {
+        const proj = this.getProjectById(projId);
+        if (proj === undefined) {
+            console.log(`ERROR: couldn't solve id`)
+            return;
+        }
+        for (const attr in changesObj) {
+            switch (attr) {
+                case title:
+                    proj.title = changesObj.title;
+                    break;
+                case color:
+                    proj.color = changesObj.color;
+                    break;
+                case description:
+                    proj.description = changesObj.description;
+                    break;
+                case date:
+                    proj.date = changesObj.date;
+                    break;
+                case id:
+                    proj.id = changesObj.id;
+                    break;
+                default:
+                    console.log(`ERROR: couldn't match attr ${attr}`);
+            }
+        }
+    }
 }

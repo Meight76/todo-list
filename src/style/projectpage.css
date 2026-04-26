@@ -4,6 +4,13 @@
     grid-template-columns: 1fr 1fr;
 }
 
+#btn-div {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+}
+
 .add-project-btn {
     display: flex;
     margin: 20px;
@@ -41,7 +48,7 @@
     display: flex;
     text-transform: uppercase;
     padding: 10px;
-    gap: 20px;
+    gap: 10px;
     background-color: red;
     margin: 20px;
     justify-self: center;

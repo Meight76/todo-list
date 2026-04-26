@@ -21,8 +21,12 @@ export default function projectUi() {
     projectDiv.setAttribute("id", "project-div");
     projectDiv.classList.add("project-div");
 
-    main.appendChild(createProjectBtn);
-    main.appendChild(removeProjectBtn);
+    const buttonsDiv = document.createElement("div");
+    buttonsDiv.setAttribute("id", "btn-div");
+    buttonsDiv.appendChild(createProjectBtn);
+    buttonsDiv.appendChild(removeProjectBtn);
+
+    main.appendChild(buttonsDiv);
     main.appendChild(projectDiv);
 
     const addDialog = document.createElement("dialog");
@@ -134,9 +138,11 @@ export default function projectUi() {
 
     main.appendChild(addDialog);
 
-    renderProjectDiv(projectDiv);
-    controller();
+    new Project("example", "#000", "", "", new Date(), "eeeee");
 
+    renderProjectDiv(projectDiv);
+    updateProjects(projectDiv);
+    controller();
 }
 
 export function renderProjectDiv(node) {
@@ -145,13 +151,49 @@ export function renderProjectDiv(node) {
     showProjectDialog.setAttribute("closedby", "any");
     showProjectDialog.classList.add("show-project-dialog");
 
-    const showTitle = document.createElement("h1");
+    const modeInfo = document.createElement("h1");
+    modeInfo.classList.add("show-dialog-mode");
+    modeInfo.textContent = "visualize";
+    modeInfo.setAttribute("id", "show-dialog-change-mode-info");
+
+    const buttonChangeMode = document.createElement("button");
+    buttonChangeMode.dataset.id = "view";
+    buttonChangeMode.classList.add("change-mode-btn");
+    buttonChangeMode.textContent = "edit mode";
+    buttonChangeMode.setAttribute("id", "show-dialog-change-mode-btn");
+
+    const showCloseBtn = document.createElement("button");
+    showCloseBtn.classList.add("show-dialog-close-btn");
+    showCloseBtn.setAttribute("id", "show-dialog-close-btn");
+    showCloseBtn.textContent = "Stop";
+
+    const showBtnsDiv = document.createElement("div");
+    showBtnsDiv.setAttribute("id", "show-dialog-btns-div");
+    showBtnsDiv.appendChild(buttonChangeMode);
+    showBtnsDiv.appendChild(showCloseBtn);
+
+    const divHeader = document.createElement("div");
+    divHeader.setAttribute("id", "show-dialog-header");
+    divHeader.appendChild(modeInfo);
+    divHeader.appendChild(showBtnsDiv);
+
+    const showTitle = document.createElement("input");
+    showTitle.setAttribute("id", "show-dialog-title");
+    showTitle.setAttribute("type", "text");
+
     const showProgress = document.createElement("h2");
-    const showDate = document.createElement("p");
-    const showDescription = document.createElement("p");
+    showProgress.setAttribute("id", "show-dialog-progress");
+
+    const showDate = document.createElement("input");
+    showDate.setAttribute("id", "show-dialog-date");
+    showDate.setAttribute("type", "date");
+
+    const showDescription = document.createElement("textarea");
+    showDescription.setAttribute("id", "show-dialog-description");
+    showDescription.setAttribute("maxlength", "300");
+
     const showTodosDiv = document.createElement("div");
 
-    showDescription.setAttribute("id", "show-project-dialog-description");
     showTodosDiv.classList.add("todos-div");
 
     const divProgressAndDate = document.createElement("div");
@@ -245,6 +287,7 @@ export function renderProjectDiv(node) {
     divProgressAndDate.appendChild(showProgress);
     divProgressAndDate.appendChild(showDate);
 
+    showProjectDialog.appendChild(divHeader);
     showProjectDialog.appendChild(showTitle);
     showProjectDialog.appendChild(divProgressAndDate);
     showProjectDialog.appendChild(showDescription);

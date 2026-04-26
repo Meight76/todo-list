@@ -1,4 +1,5 @@
 import Todo from "./todoModel.js";
+import { color } from "../controller/projectController.js";
 import Global from "../storage/global.js";
 
 export default class Project {
@@ -38,17 +39,53 @@ return hydrate;
     get id() {
         return this._id;
     }
+    set id(text) {
+        if (text.length !== 36) {
+            console.log(`ERROR: invalid project id ${text}`);
+        } else {
+            this._id = text;
+        }
+    }
+
     get date() {
         return this._dueDate;
+    }
+    set date(dateObj) {
+        if (!(dateObj instanceof Date)) {
+            console.log(`ERROR: ${dateObj} not instance of date`);
+        } else {
+            this._dueDate = dateObj;
+        }
     }
     get title() {
         return this._title;
     }
+    set title(text) {
+        if (typeof text !== "string" || text.length < 1) {
+            console.log(`ERROR: invalid title ${text}`);
+        } else {
+            this._title = text;
+        }
+    }
     get color() {
         return this._color;
     }
+    set color(hexCode) {
+        if (!color.includes(hexCode)) {
+            console.log(`ERROR: invalid color ${hexCode}`);
+        } else {
+            this._color = hexCode;
+        }
+    }
     get description() {
         return this._description;
+    }
+    set description(text) {
+        if (typeof text !== "string" || text.length > 300) {
+            console.log(`ERROR: invalid description ${text}`);
+        } else {
+            this._description = text;
+        }
     }
     get progress() {
         return this._progress;
