@@ -174,8 +174,8 @@ textarea {
     border: 1px solid black;
     padding: 10px;
     border-radius: 50%;
-    height: 16px;
-    width: 16px;
+    height: 20px;
+    width: 20px;
 }
 
 #color-pick:open {
@@ -274,13 +274,23 @@ input[type="date"] {
 }
 
 #show-project-dialog:open {
-    color: var(--bright-white);
-    border-radius: 10px;
+    color: hsl(0 0% 20%);
+    border-radius: 20px;
+    box-shadow: inset 0 0 5px hsl(from var(--show-project-color) h s calc(l - 20) / 0.5);
     width: min(50vw, 500px);
-    border: none;
+    border: 8px solid var(--show-project-color);
     overflow-y: auto;
+    gap: 10px;
     display: flex;
     flex-direction: column;
+
+    #show-dialog-change-mode-info {
+        color: hsl(from var(--dark-cyan) h s calc(l + 10));
+        padding: 5px;
+        border-radius: 10px;
+        box-shadow: inset 0 0 30px hsl(from var(--dark-cyan) h s l / 0.2);
+        border: 1px solid var(--dark-cyan);
+    }
 
     p,
     h1,
@@ -288,7 +298,35 @@ input[type="date"] {
         margin: 0;
     }
 
-    #progress-date-row {
+    #show-dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        div {
+            display: flex;
+            gap: 3px;
+
+            button {
+                border-radius: 10px;
+                border: none;
+                padding: 5px 10px 5px 10px;
+
+                &.change-mode-btn {
+                    background-color: var(--dark-cyan);
+                    color: white;
+                    font-weight: 800;
+                }
+                &.show-dialog-close-btn {
+                    background-color: red;
+                    color: white;
+                    font-weight: 800;
+                }
+            }
+        }
+    }
+
+    #progress-date{
     display: flex;
     gap: 10px;
     justify-content: space-between;
@@ -298,10 +336,44 @@ input[type="date"] {
     }
 }
 
+    #progress-number {
+        color: var(--show-project-color);
+    }
+
     &::backdrop {
         background-color: hsl(0 0% 0% / 0.1);
     }
 
+    label {
+        font-weight: 600;
+    }
+
+    input,
+    textarea {
+        border: 1px solid var(--show-project-color);
+        font-size: 15px;
+        padding: 8px;
+    }
+
+    .hidden-input {
+        &[type="date"] {
+            color: var(--show-project-color);
+            border: none;
+            outline: none;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        &[type="text"] {
+            color: var(--show-project-color);
+            border: none;
+            outline: none;
+            font-size: 30px;
+            font-weight: 800;
+        }
+        &:is(textarea) {
+            border: none;
+        }
+    }
 }
 
 #show-project-dialog-description {
@@ -317,19 +389,20 @@ input[type="date"] {
 .show-todos-btn {
     align-self: start;
     margin-top: 10px;
-    color: var(--bright-white);
+    color: #fff;
     font-weight: 800;
-    background-color: var(--secondary-color);
+    text-transform: uppercase;
+    background-color: var(--show-project-color);
     box-shadow: 0 0 7px hsl(0 0% 0% / 0.2);
     border: none;
     border-radius: 10px;
     padding: 4px 20px 4px 20px;
 
     &:hover {
-        background-color: hsl(from var(--secondary-color) h s calc(l - 10));
+        background-color: hsl(from var(--show-project-color) h s calc(l - 10));
     }
     &:active {
-        background-color: hsl(from var(--secondary-color) h s calc(l - 20));
+        background-color: hsl(from var(--show-project-color) h s calc(l - 20));
     }
 }
 
@@ -437,4 +510,45 @@ input[type="date"] {
         text-transform: uppercase;
         color: var(--secondary-color);
     }
+}
+
+#show-color-pick:open {
+    display: flex;
+    flex-wrap: wrap;
+    width: 6vw;
+    border: none;
+    gap: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px hsl(0 0% 0% / 0.2);
+    margin: 0;
+    position: absolute;
+    position-anchor: --show-call-button;
+    top: calc(anchor(top) + 20px);
+    left: calc(anchor(left) + 20px);
+
+    .show-pick-color-btn {
+        width: 20px;
+        height: 20px;
+        border: 1px solid black;
+        border-radius: 50%;
+    }
+}
+
+#show-chose-color-div {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+#show-color-pick-call {
+    anchor-name: --show-call-button;
+    background-color: #000;
+    position: relative;
+    box-shadow: inset 0 0 10px hsl (0 0% 0% / 0.3);
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
 }

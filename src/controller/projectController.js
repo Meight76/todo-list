@@ -24,10 +24,15 @@ export default function contollerProjectUi() {
     const showProjectDialog = document.querySelector("#show-project-dialog");
     const showProjectTitle = document.querySelector("#show-dialog-title");
     const showProjectProgress = document.querySelector("#show-dialog-progress");
+    const showProjectProgressNumber = document.querySelector("#progress-number");
     const showProjectDate = document.querySelector("#show-dialog-date");
     const showProjectDescription = document.querySelector("#show-dialog-description");
     const showProjectModeInfo = document.querySelector("#show-dialog-change-mode-info");
     const showProjectBtnChange = document.querySelector("#show-dialog-change-mode-btn");
+    const showProjectCloseBtn = document.querySelector("#show-dialog-close-btn");
+    const showProjectColorCall = document.querySelector("#show-color-pick-call");
+    const showProjectColorDialog = document.querySelector("#show-color-pick");
+    const showProjectColorPickBtn = document.querySelectorAll(".show-pick-color-btn");
 
     createProjectBtn.addEventListener("click", () => {
         addProjectDialog.showModal();
@@ -120,8 +125,10 @@ export default function contollerProjectUi() {
         console.log(projObj);
         showProjectDialog.dataset.id = projObj.id;
         showProjectTitle.value = projObj.title;
+        document.documentElement.style.setProperty("--show-project-color", projObj.color);
 
-        showProjectProgress.textContent = projObj.progress;
+        showProjectProgressNumber.textContent = projObj.progress;
+        console.log(showProjectProgressNumber);
 
         const month = String(projObj.date.getMonth() + 1).padStart(2, "0");
         const day = String(projObj.date.getDate()).padStart(2, "0");
@@ -131,7 +138,8 @@ export default function contollerProjectUi() {
 
         showProjectDescription.value = projObj.description;
 
-        let mode = showProjectBtnChange.dataset.id;
+        let mode = "view";
+        setInputsReadonly();
 
         showProjectBtnChange.addEventListener("click", () => {
             mode = mode === "view" ? "edit" : "view";
@@ -148,13 +156,19 @@ export default function contollerProjectUi() {
 
         function setInputsReadonly() {
             showProjectDate.setAttribute("readonly", "");
+            showProjectDate.classList.add("hidden-input");
             showProjectDescription.setAttribute("readonly", "");
+            showProjectDescription.classList.add("hidden-input");
             showProjectTitle.setAttribute("readonly", "");
+            showProjectTitle.classList.add("hidden-input");
         }
         function removeInputsReadonly() {
             showProjectDate.removeAttribute("readonly");
+            showProjectDate.classList.remove("hidden-input");
             showProjectDescription.removeAttribute("readonly");
+            showProjectDescription.classList.remove("hidden-input");
             showProjectTitle.removeAttribute("readonly");
+            showProjectTitle.classList.remove("hidden-input");
         }
     }
     showProjectDate.addEventListener("change", (e) => {
@@ -177,9 +191,33 @@ export default function contollerProjectUi() {
     });
 
     function updateProjectDiv(projDiv) {
-        allProjectItems = getProjectItem();
         updateProjects(projectDiv);
+        allProjectItems = getProjectItem();
         ProjectItemsEvent(allProjectItems);
     }
+
+    showProjectColorCall.addEventListener("click", () => {
+        console.log(showProjectColorDialog);
+        showProjectColorDialog.showModal();
+    });
+
+    for (const colorBtn of showProjectColorPickBtn) {
+        colorBtn.addEventListener("click", (e) => {
+            const color = e.currentTarget.dataset.id;
+            showProjectColorCall.value = color;
+            showProjectColorCall.style.backgroundColor = color;
+
+            const projectId = showProjectDialog.dataset.id;
+            const project = Global.getProjectById(projectId);
+            project.color = showProjectColorCall.value;
+            document.documentElement.style.setProperty("--show-project-color", project.color);
+            updateProjectDiv(projectDiv);
+
+            showProjectColorDialog.close();
+        });
+    }
+    showProjectCloseBtn.addEventListener("click", () => {
+        showProjectDialog.close();
+    });
 }
 

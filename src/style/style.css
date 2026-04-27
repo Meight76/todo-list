@@ -1,7 +1,10 @@
 :root {
  --accent-color: #111111;
+ --show-project-color: #0F8C7D;
+ --show-project-label-color: #000;
  --secondary-color: midnightblue;
  --thirdth-color: turquoise;
+ --dark-cyan: rgb(8, 188, 188);
  --fourth-color: hsl(167 88.5% 51.1%);
  --bright-white: hsl(0 0% 90%);
  --side-nav-menu-color: #f8f9fa;

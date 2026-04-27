@@ -60,12 +60,12 @@ export function createSelectOptions(selectNode, arrOptions, defaultOption) {
 
 }
 
-export function createDialogColorOptions(node, arrColor) {
+export function createDialogColorOptions(node, arrColor, classItems) {
     for (const color of arrColor) {
         const pickColor = document.createElement("div");
         pickColor.setAttribute("data-id", color);
         pickColor.style.backgroundColor = color;
-        pickColor.classList.add("color-pickup-btn");
+        pickColor.classList.add(classItems);
         node.appendChild(pickColor);
     }
 }

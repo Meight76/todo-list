@@ -104,7 +104,7 @@ export default function projectUi() {
 
     choseColorDiv.appendChild(callChoseColor);
     choseColorDiv.appendChild(choseColorLabel);
-    createDialogColorOptions(choseColor, color);
+    createDialogColorOptions(choseColor, color, "color-pickup-btn");
 
     const divDatePick = document.createElement("div");
     divDatePick.classList.add("add-dialog-div");
@@ -181,8 +181,36 @@ export function renderProjectDiv(node) {
     showTitle.setAttribute("id", "show-dialog-title");
     showTitle.setAttribute("type", "text");
 
+    const choseColorDiv = document.createElement("div");
+    const choseColor = document.createElement("dialog");
+    choseColorDiv.appendChild(choseColor);
+    const choseColorLabel = document.createElement("label");
+
+    choseColorDiv.setAttribute("id", "show-chose-color-div");
+    choseColor.setAttribute("id", "show-color-pick");
+    choseColor.setAttribute("closedby", "any");
+    choseColor.setAttribute("for", "show-color-pick");
+    choseColorLabel.textContent = "pick a color";
+    choseColorLabel.setAttribute("for", "show-color-pick-call");
+
+    const callChoseColor = document.createElement("button");
+    callChoseColor.classList.add("call-chose-color");
+    callChoseColor.setAttribute("id", "show-color-pick-call");
+    callChoseColor.value = "#000000";
+    callChoseColor.style.backgroundColor = callChoseColor.value;
+
+    choseColorDiv.appendChild(callChoseColor);
+    choseColorDiv.appendChild(choseColorLabel);
+    createDialogColorOptions(choseColor, color, "show-pick-color-btn");
+
+    const showProgressNumber = document.createElement("span");
+    showProgressNumber.setAttribute("id", "progress-number");
+
     const showProgress = document.createElement("h2");
+    showProgress.textContent = "progress: ";
     showProgress.setAttribute("id", "show-dialog-progress");
+    showProgress.appendChild(showProgressNumber);
+
 
     const showDate = document.createElement("input");
     showDate.setAttribute("id", "show-dialog-date");
@@ -289,6 +317,7 @@ export function renderProjectDiv(node) {
 
     showProjectDialog.appendChild(divHeader);
     showProjectDialog.appendChild(showTitle);
+    showProjectDialog.appendChild(choseColorDiv);
     showProjectDialog.appendChild(divProgressAndDate);
     showProjectDialog.appendChild(showDescription);
     showProjectDialog.appendChild(showTodosAddBtn);
