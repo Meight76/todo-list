@@ -22,6 +22,10 @@ export default class Global {
         }
     }
 
+    static resetProj() {
+        this._allProjects = [];
+    }
+
     static addProject(proj) {
         if (!(proj instanceof Project)) {
             console.log(`ERROR: project must be instance of Project`);

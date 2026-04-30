@@ -7,7 +7,7 @@
 #btn-div {
     grid-column: span 2;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: start;
 }
 
@@ -29,7 +29,7 @@
 
     svg {
         width: 20px;
-        fill: var(--bright-white);
+        fill: #fff;
     }
     span {
         align-self: center;
@@ -62,7 +62,7 @@
 
     svg {
         width: 20px;
-        fill: var(--bright-white);
+        fill: #fff;
     }
 
     span {
@@ -78,6 +78,41 @@
     }
 
     }
+
+.save-project-btn {
+
+display: flex;
+    text-transform: uppercase;
+    padding: 10px;
+    gap: 10px;
+    background-color: var(--save-btn-color);
+    margin: 20px;
+    justify-self: center;
+    justify-content: center;
+    width: min(40vw, 400px);
+    font-weight: 800;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    align-items: center;
+
+    svg {
+        width: 20px;
+        fill: #fff;
+    }
+
+    span {
+        text-align: center;
+    }
+
+    &:hover {
+        background-color: hsl(from var(--save-btn-color) h s calc(l - 10));
+    }
+    &:active {
+        background-color: hsl(from var(--save-btn-color) h s calc(l - 20));
+    }
+
+}
 
 
 .add-dialog:open {
@@ -316,11 +351,25 @@ input[type="date"] {
                     background-color: var(--dark-cyan);
                     color: white;
                     font-weight: 800;
+
+                    &:hover {
+                        background-color: hsl(from var(--dark-cyan) h s calc(l - 10));
+                    }
+                    &:active {
+                        background-color: hsl(from var(--dark-cyan) h s calc(l - 10));
+                    }
                 }
                 &.show-dialog-close-btn {
                     background-color: red;
                     color: white;
                     font-weight: 800;
+
+                    &:hover {
+                        background-color: hsl(from red h s calc(l - 10));
+                    }
+                    &:active {
+                        background-color: hsl(from red h s calc(l - 20));
+                    }
                 }
             }
         }
@@ -355,6 +404,11 @@ input[type="date"] {
         padding: 8px;
     }
 
+    input {
+        font-size: 25px;
+        font-weight: 700;
+    }
+
     .hidden-input {
         &[type="date"] {
             color: var(--show-project-color);
@@ -386,7 +440,15 @@ input[type="date"] {
     padding: 5px;
 }
 
-.show-todos-btn {
+#show-todos-btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.show-todos-btn,
+.todos-remove-btn,
+.todos-edit-btn {
     align-self: start;
     margin-top: 10px;
     color: #fff;
@@ -404,18 +466,26 @@ input[type="date"] {
     &:active {
         background-color: hsl(from var(--show-project-color) h s calc(l - 20));
     }
+
+    &.todos-remove-btn {
+        --show-project-color: red;
+    }
+    &.todos-edit-btn {
+        --show-project-color: var(--thirdth-color);
+    }
 }
 
 .todos-div {
     border-radius: 10px;
+    border: dashed var(--show-project-color) 2px;
     padding: 10px;
     gap: 10px;
     overflow-y: auto;
     margin-top: 10px;
-    height: 150px;
+    height: 175px;
     display: flex;
     flex-direction: column;
-    border: 2px dashed hsl(0 0% 95% / 0.4);
+    /* border: 2px dashed hsl(0 0% 95% / 0.4); */
 
     &:has(.para-is-empty) {
         justify-content: center;
@@ -423,13 +493,15 @@ input[type="date"] {
 
     .para-is-empty {
         align-self: center;
-        color: hsl(0 0% 95% / 0.7);
+        color: hsl(0 0% 30% );
     }
 
     .todo-item {
-        background-color: indigo;
-        padding: 10px;
+        background-color: var(--show-project-color);
+        padding: 10px 20px 10px 20px;
+        color: #fff;
         justify-content: space-between;
+        position: relative;
         border: none;
         border-radius: 15px;
         display: flex;
@@ -449,14 +521,54 @@ input[type="date"] {
                 fill: hsl(from red h s calc(l - 10));
             }
 
-            &.is-checked {
+        }
+        &.is-checked {
+            svg {
                 fill: lime;
 
                 &:hover {
                     fill: hsl(from lime h s calc(l - 10));
                 }
+                &:active {
+                    fill: hsl(from lime h s calc(l - 20));
+                }
             }
         }
+        &.delete-todo-btn {
+            color: #fff;
+            background-color: red;
+            position: absolute;
+            top: -10px;
+            font-weight: 800;
+            right: 0;
+            padding: 5px 20px 5px 20px;
+            border-radius: 15px;
+
+            &:hover {
+                background-color: hsl(from red h s calc(l - 10));
+            }
+            &:active {
+                background-color: hsl(from red h s calc(l - 20));
+            }
+        }
+        &.todo-edit-btn {
+            color: #fff;
+            background: var(--thirdth-color);
+            position: absolute;
+            top: -10px;
+            right: 0;
+            font-weight: 800;
+            padding: 5px 20px 5px 20px;
+            border-radius: 15px;
+
+            &:hover {
+                background-color: hsl(from var(--thirdth-color) h s calc(l - 10));
+            }
+            &:active {
+                background-color: hsl(from var(--thirdth-color) h s calc(l - 20));
+            }
+        }
+
        }
     }
 
@@ -489,13 +601,13 @@ input[type="date"] {
         text-transform: uppercase;
         padding: 7px;
         border-radius: 10px;
-        background-color: var(--secondary-color);
+        background-color: var(--show-project-color);
 
         &:hover {
-            background-color: hsl(from var(--secondary-color) h s calc(l - 10));
+            background-color: hsl(from var(--show-project-color) h s calc(l - 10));
         }
         &:active {
-            background-color: hsl(from var(--secondary-color) h s calc(l - 20));
+            background-color: hsl(from var(--show-project-color) h s calc(l - 20));
         }
 
 
@@ -507,8 +619,27 @@ input[type="date"] {
 
     >h1 {
         text-align: center;
+        justify-content: space-between;
         text-transform: uppercase;
-        color: var(--secondary-color);
+        display: flex;
+        color: var(--show-project-color);
+
+        button {
+            border: none;
+            background-color: transparent;
+        }
+
+        svg {
+            width: 30px;
+            fill: red;
+
+            &:hover {
+                fill: hsl(from red h s calc(l - 15));
+            }
+            &:active {
+                fill: hsl(from red h s calc(l - 30));
+            }
+        }
     }
 }
 

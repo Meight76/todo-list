@@ -17,6 +17,10 @@ export default function projectUi() {
     removeProjectBtn.classList.add("remove-project-btn");
     removeProjectBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>minus-thick</title><path d="M20 14H4V10H20" /></svg> <span>Remove project</span>`
 
+    const saveProjectBtn = document.createElement("button");
+    saveProjectBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m422-232 207-248H469l29-227-185 267h139l-30 208ZM320-80l40-280H160l360-520h80l-40 320h240L400-80h-80Zm151-390Z"/></svg> <span>Save</span>`;
+    saveProjectBtn.classList.add("save-project-btn");
+
     projectDiv = document.createElement("div");
     projectDiv.setAttribute("id", "project-div");
     projectDiv.classList.add("project-div");
@@ -24,6 +28,7 @@ export default function projectUi() {
     const buttonsDiv = document.createElement("div");
     buttonsDiv.setAttribute("id", "btn-div");
     buttonsDiv.appendChild(createProjectBtn);
+    buttonsDiv.appendChild(saveProjectBtn);
     buttonsDiv.appendChild(removeProjectBtn);
 
     main.appendChild(buttonsDiv);
@@ -138,8 +143,6 @@ export default function projectUi() {
 
     main.appendChild(addDialog);
 
-    new Project("example", "#000", "", "", new Date(), "eeeee");
-
     renderProjectDiv(projectDiv);
     updateProjects(projectDiv);
     controller();
@@ -180,6 +183,7 @@ export function renderProjectDiv(node) {
     const showTitle = document.createElement("input");
     showTitle.setAttribute("id", "show-dialog-title");
     showTitle.setAttribute("type", "text");
+    showTitle.setAttribute("maxlength", "30");
 
     const choseColorDiv = document.createElement("div");
     const choseColor = document.createElement("dialog");
@@ -221,8 +225,8 @@ export function renderProjectDiv(node) {
     showDescription.setAttribute("maxlength", "300");
 
     const showTodosDiv = document.createElement("div");
-
     showTodosDiv.classList.add("todos-div");
+    showTodosDiv.setAttribute("id", "show-todos-div");
 
     const divProgressAndDate = document.createElement("div");
     divProgressAndDate.setAttribute("id", "progress-date");
@@ -290,12 +294,20 @@ export function renderProjectDiv(node) {
     prioritySelectDiv.appendChild(prioritySelectLabel);
     prioritySelectDiv.appendChild(prioritySelect);
 
+    const addDialogCloseBtn = document.createElement("button");
+    addDialogCloseBtn.classList.add("todo-dialog-close-btn");
+    addDialogCloseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>`
+    addDialogCloseBtn.setAttribute("id", "todo-dialog-close-btn");
+
     const addDialogHeader = document.createElement("h1");
     addDialogHeader.classList.add("todo-dialog-header");
     addDialogHeader.textContent = "Add todo";
+    addDialogHeader.appendChild(addDialogCloseBtn);
+
 
     const addDialogBtn = document.createElement("button");
     addDialogBtn.classList.add("add-todo-btn");
+    addDialogBtn.setAttribute("id", "add-todo-btn");
     addDialogBtn.textContent = "Create todo";
 
     dialogTodosAdd.appendChild(addDialogHeader);
@@ -310,6 +322,22 @@ export function renderProjectDiv(node) {
     showTodosAddBtn.classList.add("show-todos-btn");
     showTodosAddBtn.textContent = "Add todo";
 
+    const showTodosEditBtn = document.createElement("button");
+    showTodosEditBtn.setAttribute("id", "todos-edit-btn");
+    showTodosEditBtn.classList.add("todos-edit-btn");
+    showTodosEditBtn.textContent = "Edit todo";
+
+    const showTodosRemoveBtn = document.createElement("button");
+    showTodosRemoveBtn.setAttribute("id", "todos-remove-btn");
+    showTodosRemoveBtn.classList.add("todos-remove-btn");
+    showTodosRemoveBtn.textContent = "remove todo";
+
+    const showTodosBtnsDiv = document.createElement("div");
+    showTodosBtnsDiv.setAttribute("id", "show-todos-btns");
+    showTodosBtnsDiv.appendChild(showTodosAddBtn);
+    showTodosBtnsDiv.appendChild(showTodosEditBtn);
+    showTodosBtnsDiv.appendChild(showTodosRemoveBtn);
+
     main.appendChild(dialogTodosAdd);
 
     divProgressAndDate.appendChild(showProgress);
@@ -320,10 +348,62 @@ export function renderProjectDiv(node) {
     showProjectDialog.appendChild(choseColorDiv);
     showProjectDialog.appendChild(divProgressAndDate);
     showProjectDialog.appendChild(showDescription);
-    showProjectDialog.appendChild(showTodosAddBtn);
+    showProjectDialog.appendChild(showTodosBtnsDiv);
     showProjectDialog.appendChild(showTodosDiv);
 
+    const showProjectEditTodoDialog = document.createElement("dialog");
+    showProjectEditTodoDialog.setAttribute("id", "todo-edit-dialog");
+    showProjectEditTodoDialog.setAttribute("closedby", "any");
+    showProjectEditTodoDialog.classList.add("todo-edit-dialog");
+
+    const editTodoDialogHeaderDiv = document.createElement("div");
+    editTodoDialogHeaderDiv.setAttribute("id", "edit-todo-header-div");
+    editTodoDialogHeaderDiv.classList.add("edit-todo-header-div");
+
+    const editTodoHeader = document.createElement("h1");
+    editTodoHeader.textContent = "View todo";
+    editTodoHeader.classList.add("edit-todo-header");
+    editTodoHeader.setAttribute("id", "edit-todo-h1");
+
+    const editTodoDialogCloseBtn = document.createElement("button");
+    editTodoDialogCloseBtn.textContent = "stop";
+    editTodoDialogCloseBtn.classList.add("edit-todo-close-btn");
+    editTodoDialogCloseBtn.setAttribute("id", "edit-todo-close-btn");
+
+    const editTodoDialogChangeMode = document.createElement("button");
+    editTodoDialogChangeMode.textContent = "edit mode";
+    editTodoDialogChangeMode.classList.add("edit-todo-change-btn");
+    editTodoDialogChangeMode.setAttribute("id", "edit-todo-change-btn");
+
+    editTodoDialogHeaderDiv.appendChild(editTodoHeader);
+    editTodoDialogHeaderDiv.appendChild(editTodoDialogCloseBtn);
+    editTodoDialogHeaderDiv.appendChild(editTodoDialogChangeMode);
+
+    const editTodoTitleInput = createInput("edit-todo-title", "edit-todo-title", ["edit-todo-title"],
+        {
+            type: "text",
+            maxlength: "30",
+        }
+    );
+
+    const editTodoDescriptionArea = document.createElement("textarea");
+    editTodoDescriptionArea.setAttribute("id", "edit-todo-description");
+    editTodoDescriptionArea.setAttribute("maxlength", "300");
+
+    const editTodoDateInput = createInput("edit-todo-date", "edit-todo-date", ["edit-todo-date"],
+        {
+            type: "date",
+        }
+    );
+
+    showProjectEditTodoDialog.appendChild(editTodoDialogHeaderDiv);
+    showProjectEditTodoDialog.appendChild(editTodoTitleInput);
+    showProjectEditTodoDialog.appendChild(editTodoDateInput);
+    showProjectEditTodoDialog.appendChild(editTodoDescriptionArea);
+
+
     main.appendChild(showProjectDialog);
+    main.appendChild(showProjectEditTodoDialog);
     updateProjects(projectDiv);
 
 }
@@ -347,7 +427,7 @@ export function updateProjects(node) {
 
         const progress = document.createElement("h2");
         progress.classList.add("progress-info");
-        progress.textContent = `current: ${project.progress}`;
+        progress.textContent = `current: ${Math.floor(project.progress)}%`;
 
         const headerInfo = document.createElement("div");
         headerInfo.classList.add("project-header-info");
@@ -362,10 +442,18 @@ export function updateProjects(node) {
     }
 }
 
-function renderTodosDiv(arrTodo, node) {
+export function renderTodosDiv(arrTodo, node) {
     node.textContent = "";
+    if (arrTodo.length === 0) {
+        const para = document.createElement("p");
+        para.textContent = "You don't currently has any todo!";
+        para.classList.add("para-is-empty");
+        node.appendChild(para);
+        return;
+    }
     for (const todo of arrTodo) {
-        const todoItem = document.createElement("div");
+        const todoItem = document.createElement("button");
+        todoItem.dataset.id = todo.id;
         todoItem.classList.add("todo-item");
 
         const todoTitle = document.createElement("h1");
@@ -375,15 +463,33 @@ function renderTodosDiv(arrTodo, node) {
         }
 
         const todoDate = document.createElement("p");
-        todoDate.textContent = todo.date.toDateString();
+        todoDate.textContent = todo.dueDate.toDateString();
 
         const todoCheckButton = document.createElement("button");
+        todoCheckButton.classList.add("todo-check-btn");
         todoCheckButton.dataset.id = todo.id;
 
         todoItem.appendChild(todoTitle);
         todoItem.appendChild(todoDate);
         todoItem.appendChild(todoCheckButton);
+        updateTodoCheck(todo, todoCheckButton);
 
         node.appendChild(todoItem);
     }
 }
+
+export function updateTodoCheck(todoObj, btn) {
+    if (todoObj.check) {
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>check</title><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" /></svg>`;
+        console.log("checked");
+        btn.classList.add("is-checked");
+        console.log(btn);
+    } else {
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>exclamation</title><path d="M 11,4L 13,4L 13,15L 11,15L 11,4 Z M 13,18L 13,20L 11,20L 11,18L 13,18 Z" /></svg>`;
+        console.log("unchecked");
+        console.log(btn);
+        btn.classList.remove("is-checked");
+    }
+    console.log(todoObj.check);
+}
+

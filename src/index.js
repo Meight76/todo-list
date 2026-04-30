@@ -1,10 +1,14 @@
 import "./style/style.css";
 import homepageUi from "./ui/homepage.js";
+import WebStorage from "./storage/storage.js";
+import Global from "./storage/global.js";
 import  projectUi  from "./ui/projectUi.js";
 import { todosPage } from "./todos.js";
 import { resetDiv } from "./helpFunctions.js";
 export const main = document.querySelector("#main-content");
 
+WebStorage.loadStorage();
+console.log((Global.allProjects)[0].getTodos(), (Global.allProjects)[0].title);
 homepageUi();
 
 const navHome = document.querySelector("#nav-home-btn");

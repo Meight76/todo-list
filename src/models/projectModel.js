@@ -88,17 +88,31 @@ return hydrate;
         }
     }
     get progress() {
-        return this._progress;
+        const todos = this.getTodos();
+        const checkedNum = todos.reduce((value, el) => {
+            return el.check === true ? value + 1 : value;
+        }, 0);
+        return (checkedNum / todos.length) * 100;
     }
 
     getTodos() {
         return this._todos.slice();
     }
 
+    getTodoById(todoId) {
+        return (this._todos.filter(item => item.id === todoId))[0];
+    }
+
     addTodo(...todoObj) {
+        if (Array.isArray(todoObj) && Array.isArray(todoObj[0])) {
+            todoObj = todoObj.flat();
+        }
         for (const todo of todoObj) {
+            console.log(todo, todoObj[0]);
             if (!(todo instanceof Todo)) {
                 console.log(`ERROR: ${todo} is not instance of Todo`);
+                console.log(todo);
+                console.log(Object.getPrototypeOf(todo));
             } else if (this.isTodoAlreadyExist(todo.title)) {
                 console.log(`ERROR: todo: ${todo.title} already exist`);
             }
