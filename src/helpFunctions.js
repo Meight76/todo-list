@@ -42,12 +42,15 @@ export function cleanTags(arrTagsReferences) {
     }
 }
 
-export function createSelectOptions(selectNode, arrOptions, defaultOption) {
+export function createSelectOptions(selectNode, arrOptions, defaultOption, defaultId) {
     if (defaultOption) {
         const option = document.createElement("option");
         option.textContent = defaultOption;
         option.setAttribute("selected", "");
         option.value = "";
+        if (defaultId) {
+            option.setAttribute("id", defaultId);
+        }
         selectNode.appendChild(option);
     }
 

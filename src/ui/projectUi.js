@@ -365,6 +365,9 @@ export function renderProjectDiv(node) {
     editTodoHeader.classList.add("edit-todo-header");
     editTodoHeader.setAttribute("id", "edit-todo-h1");
 
+    const editTodoHeaderDiv = document.createElement("div");
+    editTodoHeaderDiv.setAttribute("id", "edit-todo-header-div");
+
     const editTodoDialogCloseBtn = document.createElement("button");
     editTodoDialogCloseBtn.textContent = "stop";
     editTodoDialogCloseBtn.classList.add("edit-todo-close-btn");
@@ -375,9 +378,16 @@ export function renderProjectDiv(node) {
     editTodoDialogChangeMode.classList.add("edit-todo-change-btn");
     editTodoDialogChangeMode.setAttribute("id", "edit-todo-change-btn");
 
-    editTodoDialogHeaderDiv.appendChild(editTodoHeader);
-    editTodoDialogHeaderDiv.appendChild(editTodoDialogCloseBtn);
-    editTodoDialogHeaderDiv.appendChild(editTodoDialogChangeMode);
+    const divHeaderBtns = document.createElement("div");
+    divHeaderBtns.setAttribute("id", "edit-todo-btn-div");
+
+    editTodoHeaderDiv.appendChild(editTodoHeader);
+
+    divHeaderBtns.appendChild(editTodoDialogChangeMode);
+    divHeaderBtns.appendChild(editTodoDialogCloseBtn);
+
+    editTodoDialogHeaderDiv.appendChild(editTodoHeaderDiv);
+    editTodoDialogHeaderDiv.appendChild(divHeaderBtns);
 
     const editTodoTitleInput = createInput("edit-todo-title", "edit-todo-title", ["edit-todo-title"],
         {
@@ -396,8 +406,13 @@ export function renderProjectDiv(node) {
         }
     );
 
+    const editTodoSelect = document.createElement("select");
+    editTodoSelect.setAttribute("id", "edit-todo-select");
+    createSelectOptions(editTodoSelect, priorityOptions, `current`, "edit-todo-priority-default");
+
     showProjectEditTodoDialog.appendChild(editTodoDialogHeaderDiv);
     showProjectEditTodoDialog.appendChild(editTodoTitleInput);
+    showProjectEditTodoDialog.appendChild(editTodoSelect);
     showProjectEditTodoDialog.appendChild(editTodoDateInput);
     showProjectEditTodoDialog.appendChild(editTodoDescriptionArea);
 

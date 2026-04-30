@@ -56,6 +56,8 @@ export default function contollerProjectUi() {
     const editTodoTitle = document.querySelector("#edit-todo-title");
     const editTodoDescription = document.querySelector("#edit-todo-description");
     const editTodoDate = document.querySelector("#edit-todo-date");
+    const editTodoPriority = document.querySelector("#edit-todo-select");
+    const editTodoPriorityDefault = document.querySelector("#edit-todo-priority-default");
 
     let isTodoRemovePressed = false;
     let isEditBtnPressed = false;
@@ -397,6 +399,9 @@ export default function contollerProjectUi() {
         editTodoDialog.dataset.id = todo.id;
         editTodoDialog.dataset.mode = mode;
         editTodoHeader.textContent = mode === "view" ? "view mode" : "edit mode";
+        editTodoPriorityDefault.textContent = `current (${todo.priority})`;
+        editTodoPriorityDefault.value = todo.priority;
+
 
         const month = String(todo.dueDate.getMonth()).padStart(2, "0");
         const day = String(todo.dueDate.getDate()).padStart(2, "0");
@@ -428,25 +433,36 @@ export default function contollerProjectUi() {
         todoItemsListen();
     });
 
+    editTodoPriority.addEventListener("change", (e) => {
+        const project = Global.getProjectById(showProjectDialog.dataset.id);
+        const todo = project.getTodoById(editTodoDialog.dataset.id);
+        todo.priority = e.currentTarget.value;
+        console.log(todo);
+    });
+
     function updateTodoMode(mode) {
-        if (mode === "edit") {
+        if (mode === "view") {
             editTodoDescription.setAttribute("readonly", "");
             editTodoDate.setAttribute("readonly", "");
             editTodoTitle.setAttribute("readonly", "");
+            editTodoPriority.setAttribute("disabled", "");
             editTodoHeader.textContent = "Edit mode";
 
             editTodoDescription.classList.add("hidden-input");
             editTodoDate.classList.add("hidden-input");
             editTodoTitle.classList.add("hidden-input");
+            editTodoPriority.classList.add("hidden-input");
         } else {
             editTodoDescription.removeAttribute("readonly");
             editTodoDate.removeAttribute("readonly");
             editTodoTitle.removeAttribute("readonly");
+            editTodoPriority.removeAttribute("disabled");
             editTodoHeader.textContent = "View mode";
 
             editTodoDescription.classList.remove("hidden-input");
             editTodoDate.classList.remove("hidden-input");
             editTodoTitle.classList.remove("hidden-input");
+            editTodoPriority.classList.remove("hidden-input");
         }
     }
 
